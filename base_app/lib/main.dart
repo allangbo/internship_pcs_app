@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
 import 'package:micro_core/app/base_app.dart';
 import 'package:micro_core/app/micro_app.dart';

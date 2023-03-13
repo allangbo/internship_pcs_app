@@ -4,6 +4,7 @@ import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_first_f
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_second_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_third_form.dart';
+import 'package:micro_app_publish_vacancy/app/services/vacancy.service.dart';
 
 class PublishVacancyMultiFormPage extends StatefulWidget {
   const PublishVacancyMultiFormPage({super.key});
@@ -20,6 +21,7 @@ class _PublishVacancyMultiFormPageState
   final _secondFormKey = GlobalKey<PublishVacancySecondFormState>();
   final _thirdFormKey = GlobalKey<PublishVacancyThirdFormState>();
   final _fourthFormKey = GlobalKey<PublishVacancyFourthFormState>();
+  final _vacancyService = VacancyService();
 
   bool _isCurrentStepValid() {
     final firstFormState = _firstFormKey.currentState;
@@ -68,6 +70,7 @@ class _PublishVacancyMultiFormPageState
             area: firstFormState.area,
             benefits: firstFormState.benefits,
             steps: fourthFormState!.steps);
+        _vacancyService.publishVacancy(_vacancy);
         print(_vacancy);
       } else {
         setState(() {
