@@ -13,6 +13,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  brasil_fields: ^1.10.0
+  validatorless: ^1.2.3
+  intl: ^0.18.0
+
   micro_core:
     path: ../micro_core
 
