@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:micro_app_publish_vacancy/app/entities/internship_vacancy.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_first_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_form.dart';
@@ -49,34 +50,12 @@ class _PublishVacancyMultiFormPageState
   }
 
   _onStepContinue() {
-    final firstFormState = _firstFormKey.currentState;
-    final secondFormState = _secondFormKey.currentState;
-    final thirdFormState = _thirdFormKey.currentState;
-    final fourthFormState = _fourthFormKey.currentState;
     bool isLastStep = (currentStep == getSteps().length - 1);
 
-    if (_isCurrentStepValid()) {
-      if (isLastStep) {
-        //Do something with this information
-        final InternshipVacancy _vacancy = InternshipVacancy(
-            name: firstFormState!.name,
-            openingDate: firstFormState.openingDate,
-            closingDate: firstFormState.closingDate,
-            description: secondFormState!.description,
-            requirements: thirdFormState!.requirements,
-            modality: firstFormState.modality,
-            scholarship: firstFormState.scholarship,
-            city: firstFormState.city,
-            area: firstFormState.area,
-            benefits: firstFormState.benefits,
-            steps: fourthFormState!.steps);
-        _vacancyService.publishVacancy(_vacancy);
-        print(_vacancy);
-      } else {
-        setState(() {
-          currentStep += 1;
-        });
-      }
+    if (_isCurrentStepValid() && !isLastStep) {
+      setState(() {
+        currentStep += 1;
+      });
     }
   }
 
@@ -94,6 +73,61 @@ class _PublishVacancyMultiFormPageState
         : setState(() {
             currentStep -= 1;
           });
+  }
+
+  _submitVacancy(RunMutation runMutation) {
+    final firstFormState = _firstFormKey.currentState;
+    final secondFormState = _secondFormKey.currentState;
+    final thirdFormState = _thirdFormKey.currentState;
+    final fourthFormState = _fourthFormKey.currentState;
+
+    if (_isCurrentStepValid()) {
+      final InternshipVacancy vacancy = InternshipVacancy(
+          name: firstFormState!.name,
+          openingDate: firstFormState.openingDate,
+          closingDate: firstFormState.closingDate,
+          description: secondFormState!.description,
+          requirements: thirdFormState!.requirements,
+          modality: firstFormState.modality,
+          scholarship: firstFormState.scholarship,
+          city: firstFormState.city,
+          area: firstFormState.area,
+          benefits: firstFormState.benefits,
+          steps: fourthFormState!.steps);
+      runMutation({'input': vacancy.toJson()});
+    }
+  }
+
+  _getContinueButton() {
+    bool isLastStep = (currentStep == getSteps().length - 1);
+    if (isLastStep) {
+      builder(RunMutation runMutation, QueryResult? result) {
+        return TextButton(
+          onPressed: () {
+            _submitVacancy(runMutation);
+          },
+          child: const Text(
+            'PRÓXIMO',
+            style: TextStyle(color: Colors.blue),
+          ),
+        );
+      }
+
+      onCompleted(dynamic resultData) {
+        print(resultData);
+      }
+
+      return _vacancyService.getPublishVacancyMutationWidget(
+          builder, onCompleted);
+    } else {
+      return TextButton(
+        onPressed: _onStepContinue,
+        child: const Text(
+          'PRÓXIMO',
+          style: TextStyle(color: Colors.blue),
+        ),
+      );
+    }
   }
 
   @override
@@ -117,13 +151,7 @@ class _PublishVacancyMultiFormPageState
             controlsBuilder: (context, _) {
               return Row(
                 children: <Widget>[
-                  TextButton(
-                    onPressed: _onStepContinue,
-                    child: const Text(
-                      'PRÓXIMO',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
+                  _getContinueButton(),
                   TextButton(
                     onPressed: _onStepCancel,
                     child: const Text(
