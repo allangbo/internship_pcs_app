@@ -3,6 +3,7 @@ import 'package:base_app/app/pages/home_page.dart';
 import 'package:base_app/app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:micro_app_list_vacancies/app/list_vacancies_resolver.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
 import 'package:micro_core/app/base_app.dart';
 import 'package:micro_core/app/micro_app.dart';
@@ -46,5 +47,6 @@ class MyApp extends StatelessWidget with BaseApp {
       };
 
   @override
-  List<MicroApp> get microApps => [PublishVacancyResolver()];
+  List<MicroApp> get microApps =>
+      [PublishVacancyResolver(), ListVacanciesResolver()];
 }
