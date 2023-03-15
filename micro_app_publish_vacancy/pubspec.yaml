@@ -19,6 +19,7 @@ dependencies:
 
   micro_core:
     path: ../micro_core
+  graphql_flutter: ^5.1.2
 
 dev_dependencies:
   flutter_test:
