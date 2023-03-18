@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                child: Image.network(
+                child: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
                 ),
