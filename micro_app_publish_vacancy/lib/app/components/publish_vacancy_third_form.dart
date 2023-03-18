@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_app_publish_vacancy/app/components/custom_text_form_field.dart';
 import 'package:validatorless/validatorless.dart';
 
 String requiredMessage = 'Este campo é obrigatório';
@@ -35,17 +36,14 @@ class PublishVacancyThirdFormState extends State<PublishVacancyThirdForm> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Requisitos da Vaga',
-                  border: OutlineInputBorder(),
-                ),
+              CustomTextFormField(
+                label: 'Requisitos da Vaga',
+                type: TextInputType.multiline,
+                validator: Validatorless.required(requiredMessage),
                 maxLines: 3,
                 onSaved: (value) {
                   requirements = value!;
                 },
-                keyboardType: TextInputType.multiline,
-                validator: Validatorless.required(requiredMessage),
               ),
             ]),
       ),

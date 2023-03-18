@@ -9,8 +9,8 @@ import 'package:micro_app_publish_vacancy/app/graphql_config.dart';
 
 class VacancyService {
   String publishVacancyMutation = '''
-            mutation createPosition(\$input: CreatePositionInput) {
-	            createPosition(input: \$input) {
+            mutation createPosition(\$input: CreatePositionInput!) {
+              createPosition(input: \$input) {
                 id
               }
             }
@@ -48,12 +48,13 @@ class VacancyService {
                   {Object? optimisticResult}),
               QueryResult<Object?>?)
           builder,
-      FutureOr<void> Function(Map<String, dynamic>?)? onCompleted) {
+      FutureOr<void> Function(Map<String, dynamic>?)? onCompleted,
+      FutureOr<void> Function(OperationException?)? onError) {
     return Mutation(
       options: MutationOptions(
-        document: gql(publishVacancyMutation),
-        onCompleted: onCompleted,
-      ),
+          document: gql(publishVacancyMutation),
+          onCompleted: onCompleted,
+          onError: onError),
       builder: builder,
     );
   }
