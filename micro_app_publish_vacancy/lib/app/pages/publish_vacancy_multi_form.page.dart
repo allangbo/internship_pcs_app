@@ -117,8 +117,12 @@ class _PublishVacancyMultiFormPageState
         print(resultData);
       }
 
+      onError(dynamic resultData) {
+        print(resultData);
+      }
+
       return _vacancyService.getPublishVacancyMutationWidget(
-          builder, onCompleted);
+          builder, onCompleted, onError);
     } else {
       return TextButton(
         onPressed: _onStepContinue,

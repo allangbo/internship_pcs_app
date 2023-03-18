@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_app_publish_vacancy/app/components/custom_list_tile.dart';
 
 class PublishVacancyFourthForm extends StatefulWidget {
   const PublishVacancyFourthForm({Key? key}) : super(key: key);
@@ -67,6 +68,7 @@ class PublishVacancyFourthFormState extends State<PublishVacancyFourthForm> {
         Padding(
           padding: const EdgeInsets.all(0.0),
           child: ReorderableListView(
+            buildDefaultDragHandles: false,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             onReorder: (oldIndex, newIndex) {
@@ -79,16 +81,14 @@ class PublishVacancyFourthFormState extends State<PublishVacancyFourthForm> {
               });
             },
             children: List.generate(steps.length, (index) {
-              return ListTile(
-                  key: Key('$index Step ${index + 1}'),
-                  title: Text(steps[index]),
-                  leading: const Icon(Icons.drag_handle),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      _removeStep(index);
-                    },
-                  ));
+              return CustomListTile(
+                key: Key('$index Step ${index + 1}'),
+                title: steps[index],
+                index: index,
+                onDeletePressed: () {
+                  _removeStep(index);
+                },
+              );
             }),
           ),
         ),

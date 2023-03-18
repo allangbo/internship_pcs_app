@@ -2,6 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:micro_app_publish_vacancy/app/components/custom_dropdown_field.dart';
+import 'package:micro_app_publish_vacancy/app/components/custom_text_form_field.dart';
 import 'package:validatorless/validatorless.dart';
 
 String requiredMessage = 'Este campo é obrigatório';
@@ -61,106 +63,85 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               children: [
-                TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Nome da Vaga'),
-                    validator: Validatorless.required(requiredMessage),
-                    onSaved: (value) {
-                      name = value!;
-                    }),
+                CustomTextFormField(
+                  label: 'Nome da Vaga',
+                  validator: Validatorless.required(requiredMessage),
+                  onSaved: (value) {
+                    name = value!;
+                  },
+                  type: TextInputType.text,
+                ),
                 const SizedBox(height: 16.0),
-                TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Área Principal'),
-                    onSaved: (value) {
-                      area = value;
-                    }),
+                CustomTextFormField(
+                  label: 'Área Principal',
+                  validator: Validatorless.required(requiredMessage),
+                  onSaved: (value) {
+                    area = value!;
+                  },
+                  type: TextInputType.text,
+                ),
                 const SizedBox(height: 16.0),
-                TextFormField(
-                    controller: _openingDateController,
-                    decoration: const InputDecoration(
-                        labelText: 'Data Abertura',
-                        suffixIcon: InkWell(
-                          child: Icon(Icons.calendar_today),
-                        )),
-                    readOnly: true,
-                    onTap: () => _selectDate(context, _openingDateController),
-                    validator: Validatorless.required(requiredMessage),
-                    onSaved: (value) {
-                      openingDate = DateFormat('dd/MM/yyyy').parse(value!);
-                    },
-                    keyboardType: TextInputType.datetime),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _closingDateController,
-                  decoration: const InputDecoration(
-                      labelText: 'Data Fechamento',
-                      suffixIcon: InkWell(
-                        child: Icon(Icons.calendar_today),
-                      )),
+                CustomTextFormField(
+                  label: 'Data Abertura',
+                  validator: Validatorless.required(requiredMessage),
+                  onSaved: (value) {
+                    openingDate = DateFormat('dd/MM/yyyy').parse(value!);
+                  },
+                  controller: _openingDateController,
                   readOnly: true,
-                  onTap: () => _selectDate(context, _closingDateController),
+                  type: TextInputType.datetime,
+                  onTap: () => _selectDate(context, _openingDateController),
+                ),
+                const SizedBox(height: 16.0),
+                CustomTextFormField(
+                  label: 'Data Fechamento',
                   validator: Validatorless.required(requiredMessage),
                   onSaved: (value) {
                     closingDate = DateFormat('dd/MM/yyyy').parse(value!);
                   },
-                  keyboardType: TextInputType.datetime,
+                  controller: _closingDateController,
+                  readOnly: true,
+                  type: TextInputType.datetime,
+                  onTap: () => _selectDate(context, _closingDateController),
                 ),
                 const SizedBox(height: 16.0),
-                TextFormField(
-                    decoration: const InputDecoration(labelText: 'Cidade'),
-                    onSaved: (value) {
-                      city = value;
-                    }),
+                CustomTextFormField(
+                  label: 'Cidade',
+                  onSaved: (value) {
+                    city = value!;
+                  },
+                  type: TextInputType.text,
+                ),
                 const SizedBox(height: 16.0),
-                DropdownButtonFormField<String>(
-                  value: _selectedModality,
+                CustomDropdownFormField(
+                  items: const ['Remoto', 'Presencial', 'Híbrido'],
+                  label: 'Modalidade de Estágio',
                   validator: Validatorless.required(requiredMessage),
                   onSaved: (value) {
                     modality = value!;
                   },
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedModality = newValue;
-                    });
-                  },
-                  items: <String>['Remoto', 'Presencial', 'Híbrido']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  decoration: const InputDecoration(
-                    labelText: 'Modalidade de Estágio',
-                  ),
+                  value: _selectedModality,
                 ),
                 const SizedBox(height: 16.0),
-                TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Bolsa Estágio',
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      RealInputFormatter(moeda: true),
-                    ],
-                    onSaved: (value) {
-                      scholarship =
-                          value != null ? double.tryParse(value) : null;
-                    }),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Benefícios',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 3,
+                CustomTextFormField(
+                  label: 'Bolsa Estágio',
                   onSaved: (value) {
-                    benefits = value;
+                    scholarship = value != null ? double.tryParse(value) : null;
                   },
-                  keyboardType: TextInputType.multiline,
+                  type: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    RealInputFormatter(moeda: true),
+                  ],
                 ),
+                const SizedBox(height: 16.0),
+                CustomTextFormField(
+                    label: 'Benefícios',
+                    onSaved: (value) {
+                      benefits = value;
+                    },
+                    type: TextInputType.multiline,
+                    maxLines: 3),
               ])),
     );
   }
