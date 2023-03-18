@@ -9,12 +9,50 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    
+    container:
+      image:  google/dart:latest
+      
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - uses: actions/checkout@v3
+      - name: basic settings
+        run: |
+          apt update 
+          apt-get install curl -y
+          apt-get install git -y
+          apt-get install unzip -y
+          apt-get install zip -y
+          apt-get install xz-utils
+      - name: Mount flutter
+        run: git clone -b master https://github.com/flutter/flutter.git
+      - name: Show version
+        run: ./flutter/bin/flutter --version
+      - name: Install dependencies
+        run: |
+            cd base_app
+            ../flutter/bin/flutter packages get
+      - name: Enable web app
+        run: |
+            cd base_app
+            ../flutter/bin/flutter config --enable-web
+            
+      - name: Build app
+        run: |
+            cd base_app
+            ../flutter/bin/flutter build web
+            
+      - name: Install Node.js and firebase-tools
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+          apt-get install -y nodejs
+          npm install -g firebase-tools
+            
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_INTERNSHIP_PCS }}'
           channelId: live
           projectId: internship-pcs
+          entryPoint: ./base_app
+
+        
