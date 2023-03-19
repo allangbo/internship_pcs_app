@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:micro_app_publish_vacancy/app/components/custom_form_button.dart';
 import 'package:micro_app_publish_vacancy/app/entities/internship_vacancy.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_first_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_second_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_third_form.dart';
+import 'package:micro_app_publish_vacancy/app/routes.dart';
 import 'package:micro_app_publish_vacancy/app/services/vacancy.service.dart';
 
 class PublishVacancyMultiFormPage extends StatefulWidget {
@@ -23,6 +26,7 @@ class _PublishVacancyMultiFormPageState
   final _thirdFormKey = GlobalKey<PublishVacancyThirdFormState>();
   final _fourthFormKey = GlobalKey<PublishVacancyFourthFormState>();
   final _vacancyService = VacancyService();
+  bool _isLoading = false;
 
   bool _isCurrentStepValid() {
     final firstFormState = _firstFormKey.currentState;
@@ -68,7 +72,7 @@ class _PublishVacancyMultiFormPageState
   }
 
   _onStepCancel() {
-    () => currentStep == 0
+    currentStep == 0
         ? null
         : setState(() {
             currentStep -= 1;
@@ -80,6 +84,10 @@ class _PublishVacancyMultiFormPageState
     final secondFormState = _secondFormKey.currentState;
     final thirdFormState = _thirdFormKey.currentState;
     final fourthFormState = _fourthFormKey.currentState;
+
+    setState(() {
+      _isLoading = true;
+    });
 
     if (_isCurrentStepValid()) {
       final InternshipVacancy vacancy = InternshipVacancy(
@@ -94,6 +102,7 @@ class _PublishVacancyMultiFormPageState
           area: firstFormState.area,
           benefits: firstFormState.benefits,
           steps: fourthFormState!.steps);
+      var input = vacancy.toJson();
       runMutation({'input': vacancy.toJson()});
     }
   }
@@ -102,49 +111,76 @@ class _PublishVacancyMultiFormPageState
     bool isLastStep = (currentStep == getSteps().length - 1);
     if (isLastStep) {
       builder(RunMutation runMutation, QueryResult? result) {
-        return TextButton(
+        return CustomFormButton(
           onPressed: () {
             _submitVacancy(runMutation);
           },
-          child: const Text(
-            'PRÓXIMO',
-            style: TextStyle(color: Colors.blue),
-          ),
+          label: 'Publicar',
+          isLoading: _isLoading,
         );
       }
 
       onCompleted(dynamic resultData) {
-        print(resultData);
-      }
-
-      onError(dynamic resultData) {
-        print(resultData);
+        if (resultData != null) {
+          Navigator.pushReplacementNamed(context, Routes.successPage);
+        } else {
+          Navigator.pushReplacementNamed(context, Routes.errorPage);
+        }
+        setState(() {
+          _isLoading = false;
+        });
       }
 
       return _vacancyService.getPublishVacancyMutationWidget(
-          builder, onCompleted, onError);
+          builder, onCompleted);
     } else {
-      return TextButton(
+      return CustomFormButton(
         onPressed: _onStepContinue,
-        child: const Text(
-          'PRÓXIMO',
-          style: TextStyle(color: Colors.blue),
-        ),
+        label: 'Próximo',
       );
     }
+  }
+
+  _showMessage({String msg = '', bool isError = false}) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: isError ? Colors.red : Colors.green,
+        textColor: Colors.white,
+        fontSize: 20.0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: (currentStep > 0)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  _onStepCancel();
+                },
+              )
+            : null,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(
+                  context); // fecha a tela atual e retorna à tela anterior
+            },
+          ),
+        ],
         title: const Text(
-          "Cadastro de Vaga ",
+          "Publicar Vaga ",
         ),
         centerTitle: true,
       ),
       body: Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Stepper(
             elevation: 5,
             type: StepperType.horizontal,
@@ -152,22 +188,20 @@ class _PublishVacancyMultiFormPageState
             onStepCancel: _onStepCancel,
             onStepContinue: _onStepContinue,
             onStepTapped: _onStepTapped,
-            controlsBuilder: (context, _) {
-              return Row(
-                children: <Widget>[
-                  _getContinueButton(),
-                  TextButton(
-                    onPressed: _onStepCancel,
-                    child: const Text(
-                      'CANCELAR',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              );
+            controlsBuilder: (context, ControlsDetails details) {
+              return Container();
             },
             steps: getSteps(),
           )),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _getContinueButton(),
+          ],
+        ),
+      ),
     );
   }
 

@@ -24,7 +24,7 @@ class CustomListTile extends StatelessWidget {
           title,
           style: CustomListTileStyle.titleTextStyle,
         ),
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
           backgroundColor: CustomListTileStyle.circleColor,
           radius: CustomListTileStyle.circleRadius,
           child: Icon(
@@ -33,7 +33,7 @@ class CustomListTile extends StatelessWidget {
           ),
         ),
         trailing: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.delete,
             color: CustomListTileStyle.iconColor,
           ),
