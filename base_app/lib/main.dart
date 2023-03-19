@@ -1,6 +1,8 @@
+import 'package:base_app/app/colors/default_custom_color.dart';
 import 'package:base_app/app/pages/home_page.dart';
 import 'package:base_app/app/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
 import 'package:micro_core/app/base_app.dart';
 import 'package:micro_core/app/micro_app.dart';
@@ -19,8 +21,16 @@ class MyApp extends StatelessWidget with BaseApp {
 
     return MaterialApp(
       title: 'Internship 4.0',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: defaultCustomColor,
       ),
       navigatorKey: navigatorKey,
       onGenerateRoute: super.generateRoute,

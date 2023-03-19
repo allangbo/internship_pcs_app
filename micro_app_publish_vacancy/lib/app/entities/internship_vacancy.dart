@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class InternshipVacancy {
   String name;
   DateTime openingDate;
@@ -25,12 +27,37 @@ class InternshipVacancy {
       this.steps});
 
   Map<String, dynamic> toJson() {
-    final Map<String, String> data = <String, String>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['positionName'] = name;
-    data['company'] = 'Company';
-    data['role'] = area ?? '';
-    data['startsAt'] = '2023-03-13';
-    data['endsAt'] = '2023-03-14';
+    data['company'] = name;
+    data['role'] = area;
+    data['startsAt'] = DateFormat('yyyy-MM-dd').format(openingDate);
+    data['endsAt'] = DateFormat('yyyy-MM-dd').format(closingDate);
+    //data['endsAt'] = closingDate.toIso8601String();
+    //data['description'] = description;
+    //data['requirements'] = requirements;
+    //data['modality'] = modality;
+    //data['scholarship'] = scholarship;
+    //data['city'] = city;
+
+    //data['benefits'] = benefits;
+    //data['steps'] = steps;
     return data;
+  }
+
+  factory InternshipVacancy.fromJson(Map<String, dynamic> json) {
+    return InternshipVacancy(
+      name: json['name'],
+      openingDate: DateTime.parse(json['openingDate']),
+      closingDate: DateTime.parse(json['closingDate']),
+      description: json['description'],
+      requirements: json['requirements'],
+      modality: json['modality'],
+      scholarship: json['scholarship'],
+      city: json['city'],
+      area: json['area'],
+      benefits: json['benefits'],
+      steps: List<String>.from(json['steps']),
+    );
   }
 }

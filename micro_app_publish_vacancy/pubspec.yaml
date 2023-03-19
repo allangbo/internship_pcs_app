@@ -13,9 +13,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  brasil_fields: ^1.10.0
+  brasil_fields: ^1.0.0-nullsafety.1
   validatorless: ^1.2.3
-  intl: ^0.18.0
+  intl: ^0.17.0
+  fluttertoast: ^8.2.1
 
   micro_core:
     path: ../micro_core
@@ -31,6 +32,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - lib/assets/images/
+
 
   # To add assets to your package, add an assets section, like this:
   # assets:
