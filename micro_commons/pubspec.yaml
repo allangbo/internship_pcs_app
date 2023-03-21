@@ -1,8 +1,6 @@
-name: micro_app_publish_vacancy
+name: micro_commons
 description: A new Flutter package project.
 version: 0.0.1
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 homepage:
 
 environment:
@@ -12,17 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  brasil_fields: ^1.0.0-nullsafety.1
-  validatorless: ^1.2.3
-  fluttertoast: ^8.2.1
-
-  micro_core:
-    path: ../micro_core
-
-  micro_commons:
-    path: ../micro_commons
-  graphql_flutter: ^5.1.2
 
   intl: any
 
@@ -38,7 +25,6 @@ dev_dependencies:
 flutter:
   assets:
     - lib/assets/images/
-
 
   # To add assets to your package, add an assets section, like this:
   # assets:

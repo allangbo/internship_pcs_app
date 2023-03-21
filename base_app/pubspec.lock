@@ -309,10 +309,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  micro_app_list_vacancies:
+    dependency: "direct main"
+    description:
+      path: "../micro_app_list_vacancies"
+      relative: true
+    source: path
+    version: "0.0.1"
   micro_app_publish_vacancy:
     dependency: "direct main"
     description:
       path: "../micro_app_publish_vacancy"
+      relative: true
+    source: path
+    version: "0.0.1"
+  micro_commons:
+    dependency: "direct main"
+    description:
+      path: "../micro_commons"
       relative: true
     source: path
     version: "0.0.1"

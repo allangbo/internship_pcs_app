@@ -47,17 +47,19 @@ class InternshipVacancy {
 
   factory InternshipVacancy.fromJson(Map<String, dynamic> json) {
     return InternshipVacancy(
-      name: json['name'],
-      openingDate: DateTime.parse(json['openingDate']),
-      closingDate: DateTime.parse(json['closingDate']),
-      description: json['description'],
-      requirements: json['requirements'],
-      modality: json['modality'],
-      scholarship: json['scholarship'],
-      city: json['city'],
-      area: json['area'],
-      benefits: json['benefits'],
-      steps: List<String>.from(json['steps']),
+      name: json['positionName'] ?? '',
+      openingDate: DateTime.parse(
+          json['startsAt'] ?? DateFormat('yyyy-MM-dd').format(DateTime.now())),
+      closingDate: DateTime.parse(
+          json['endsAt'] ?? DateFormat('yyyy-MM-dd').format(DateTime.now())),
+      description: json['description'] ?? '',
+      requirements: json['requirements'] ?? '',
+      modality: json['modality'] ?? '',
+      scholarship: json['scholarship'] ?? 0,
+      city: json['city'] ?? '',
+      area: json['role'] ?? '',
+      benefits: json['benefits'] ?? '',
+      steps: List<String>.from(json['steps'] ?? []),
     );
   }
 }
