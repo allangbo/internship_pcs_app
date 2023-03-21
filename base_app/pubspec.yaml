@@ -34,6 +34,9 @@ dependencies:
     sdk: flutter
   micro_core:
     path: ../micro_core
+
+  micro_commons:
+    path: ../micro_commons
   
   micro_app_publish_vacancy:
     path: ../micro_app_publish_vacancy

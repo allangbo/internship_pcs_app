@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_form_button.dart';
-import 'package:micro_app_publish_vacancy/app/routes.dart';
+import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
+import 'package:micro_commons/app/components/custom_form_button.dart';
 
 class SuccessPageStyle {
   static const Color backgroundColor = Color(0xfffafafd);
@@ -83,7 +83,7 @@ class SuccessPage extends StatelessWidget {
             CustomFormButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(
-                      context, Routes.publishVacancy);
+                      context, PublishVacancyRoutes.publishVacancy);
                 },
                 label: 'Adicionar outra vaga'),
           ],

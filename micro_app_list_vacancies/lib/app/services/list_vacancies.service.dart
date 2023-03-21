@@ -6,6 +6,10 @@ class ListVacanciesService {
                     query GetAllPositionsQuery {
                       getAllPositions {
                         positionName
+                        company
+                        role
+                        startsAt
+                        endsAt
                       }
                     }
                     ''';
@@ -15,10 +19,7 @@ class ListVacanciesService {
               {VoidCallback? refetch, FetchMore? fetchMore})
           builder) {
     return Query(
-      options: QueryOptions(
-        document: gql(listVacanciesQuery),
-        pollInterval: const Duration(seconds: 10),
-      ),
+      options: QueryOptions(document: gql(listVacanciesQuery)),
       builder: builder,
     );
   }

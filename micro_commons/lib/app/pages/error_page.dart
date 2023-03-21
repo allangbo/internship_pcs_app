@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_form_button.dart';
-import 'package:micro_app_publish_vacancy/app/routes.dart';
+import 'package:micro_commons/app/components/custom_form_button.dart';
 
 class ErrorPageStyle {
   static const Color backgroundColor = Color(0xfffafafd);
@@ -36,7 +35,16 @@ class ErrorPageStyle {
 }
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({Key? key}) : super(key: key);
+  final String title;
+  final String returnRoute;
+  final String message;
+
+  const ErrorPage(
+      {Key? key,
+      required this.returnRoute,
+      required this.title,
+      required this.message})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +59,8 @@ class ErrorPage extends StatelessWidget {
             },
           ),
         ],
-        title: const Text(
-          "Publicar Vaga",
+        title: Text(
+          title,
         ),
         centerTitle: true,
       ),
@@ -66,7 +74,7 @@ class ErrorPage extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: ClipOval(
                   child: Image.asset(
-                    'packages/micro_app_publish_vacancy/lib/assets/images/publish_vacancy_error.png',
+                    'packages/micro_commons/lib/assets/images/error_image.png',
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
@@ -77,16 +85,15 @@ class ErrorPage extends StatelessWidget {
               child: Text('Ops, algo deu errado!',
                   style: ErrorPageStyle.headlineStyle),
             ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 24.0),
-              child: Text('Não foi possível publicar a vaga',
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24.0),
+              child: Text(message,
                   textAlign: TextAlign.center,
                   style: ErrorPageStyle.descriptionStyle),
             ),
             CustomFormButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, Routes.publishVacancy);
+                  Navigator.pushReplacementNamed(context, returnRoute);
                 },
                 label: 'Tentar novamente'),
           ],

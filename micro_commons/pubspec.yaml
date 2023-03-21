@@ -1,7 +1,6 @@
-name: micro_app_list_vacancies
+name: micro_commons
 description: A new Flutter package project.
 version: 0.0.1
-publish_to: 'none'
 homepage:
 
 environment:
@@ -11,11 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  micro_core:
-    path: ../micro_core
-  micro_commons:
-    path: ../micro_commons
-  graphql_flutter: ^5.1.2
+
   intl: any
 
 dev_dependencies:
@@ -28,9 +23,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   assets:
     - lib/assets/images/
+
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

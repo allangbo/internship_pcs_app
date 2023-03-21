@@ -1,10 +1,10 @@
 import 'package:base_app/app/colors/default_custom_color.dart';
 import 'package:base_app/app/pages/home_page.dart';
-import 'package:base_app/app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:micro_app_list_vacancies/app/list_vacancies_resolver.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
+import 'package:micro_commons/app/shared_routes.dart';
 import 'package:micro_core/app/base_app.dart';
 import 'package:micro_core/app/micro_app.dart';
 import 'package:micro_core/app/micro_core_utils.dart';
@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget with BaseApp {
 
   @override
   Map<String, WidgetBuilderArgs> get baseRoutes => {
-        Routes.home: (context, args) => const HomePage(
+        SharedRoutes.home: (context, args) => const HomePage(
               username: 'Usuário',
-            )
+            ),
       };
 
   @override

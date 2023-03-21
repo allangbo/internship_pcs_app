@@ -323,6 +323,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  micro_commons:
+    dependency: "direct main"
+    description:
+      path: "../micro_commons"
+      relative: true
+    source: path
+    version: "0.0.1"
   micro_core:
     dependency: "direct main"
     description:

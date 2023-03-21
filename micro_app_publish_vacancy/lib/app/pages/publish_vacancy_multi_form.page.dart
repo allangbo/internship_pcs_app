@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_form_button.dart';
-import 'package:micro_app_publish_vacancy/app/entities/internship_vacancy.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_first_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_second_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_third_form.dart';
-import 'package:micro_app_publish_vacancy/app/routes.dart';
+import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
 import 'package:micro_app_publish_vacancy/app/services/vacancy.service.dart';
+import 'package:micro_commons/app/components/custom_form_button.dart';
+import 'package:micro_commons/app/entities/internship_vacancy.dart';
 
 class PublishVacancyMultiFormPage extends StatefulWidget {
   const PublishVacancyMultiFormPage({super.key});
@@ -102,7 +101,6 @@ class _PublishVacancyMultiFormPageState
           area: firstFormState.area,
           benefits: firstFormState.benefits,
           steps: fourthFormState!.steps);
-      var input = vacancy.toJson();
       runMutation({'input': vacancy.toJson()});
     }
   }
@@ -122,9 +120,11 @@ class _PublishVacancyMultiFormPageState
 
       onCompleted(dynamic resultData) {
         if (resultData != null) {
-          Navigator.pushReplacementNamed(context, Routes.successPage);
+          Navigator.pushReplacementNamed(
+              context, PublishVacancyRoutes.successPage);
         } else {
-          Navigator.pushReplacementNamed(context, Routes.errorPage);
+          Navigator.pushReplacementNamed(
+              context, PublishVacancyRoutes.errorPage);
         }
         setState(() {
           _isLoading = false;
@@ -139,17 +139,6 @@ class _PublishVacancyMultiFormPageState
         label: 'Próximo',
       );
     }
-  }
-
-  _showMessage({String msg = '', bool isError = false}) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: isError ? Colors.red : Colors.green,
-        textColor: Colors.white,
-        fontSize: 20.0);
   }
 
   @override
