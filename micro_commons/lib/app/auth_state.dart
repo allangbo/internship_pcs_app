@@ -8,7 +8,7 @@ class AuthState extends ChangeNotifier {
 
   User? get user => _user;
 
-  bool get isAuthenticated => _user != null && _user!.accessToken.isNotEmpty;
+  bool get isAuthenticated => _user != null && _user!.token.isNotEmpty;
 
   Future<void> init() async {
     _user = await _userPreferences.getUser();

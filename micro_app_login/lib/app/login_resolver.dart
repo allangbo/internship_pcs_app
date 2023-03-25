@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginResolver implements MicroApp {
   _wrapWithGraphQLProvider(Widget widget) {
-    ValueNotifier<GraphQLClient> client = GraphQLConfig.graphInit();
+    ValueNotifier<GraphQLClient> client = GraphQLConfig().graphInit();
 
     return GraphQLProvider(
       client: client,

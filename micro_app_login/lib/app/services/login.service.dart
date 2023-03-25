@@ -2,9 +2,10 @@ import 'dart:async';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:micro_app_login/app/graphql_config.dart';
+import 'package:micro_commons/app/userRole.enum.dart';
 
 class LoginService {
-  final GraphQLClient _client = GraphQLConfig.getGraphQLClient();
+  final GraphQLClient _client = GraphQLConfig().getGraphQLClient();
   final Logger _logger = Logger();
 
   String loginMutation = '''
@@ -15,11 +16,16 @@ class LoginService {
       }
     ''';
 
-  Future<String?> login({required String code}) async {
+  static const userRoleNames = {
+    UserRole.aluno: 'STUDENT',
+    UserRole.professor: 'TEACHER',
+    UserRole.empresa: 'COMPANY',
+  };
+
+  Future<String?> login(
+      {required String code, required UserRole userType}) async {
     final variables = {
-      'input': {
-        'code': code,
-      }
+      'input': {'code': code, 'userType': userRoleNames[userType]}
     };
 
     final options = MutationOptions(

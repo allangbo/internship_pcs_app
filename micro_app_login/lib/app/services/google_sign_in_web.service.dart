@@ -1,19 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
+import 'package:micro_app_login/app/graphql_config.dart';
 import 'package:micro_app_login/app/services/login.service.dart';
+import 'package:micro_app_login/app/services/user.service.dart';
+import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/entities/user.dart';
+import 'package:micro_commons/app/userRole.enum.dart';
 
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:provider/provider.dart';
 
 class GoogleSignInService {
   final authorizationEndpoint =
       Uri.parse('https://accounts.google.com/o/oauth2/v2/auth');
   final tokenEndpoint = Uri.parse('https://oauth2.googleapis.com/token');
   final _loginService = LoginService();
-  final Logger _logger = Logger();
+  final _userService = UserService();
+  AuthState authState;
 
   final String identifier;
   final String secret;
@@ -24,12 +28,12 @@ class GoogleSignInService {
 
   Uri get redirectUrl => Uri.parse('$baseUrl/callback.html');
 
-  GoogleSignInService({
-    required this.identifier,
-    required this.secret,
-    required this.baseUrl,
-    required this.scopes,
-  }) {
+  GoogleSignInService(
+      {required this.identifier,
+      required this.secret,
+      required this.baseUrl,
+      required this.scopes,
+      required this.authState}) {
     html.window.addEventListener('message', _eventListener);
   }
 
@@ -37,11 +41,7 @@ class GoogleSignInService {
     _signInSession?.completeWithCode((event as html.MessageEvent).data);
   }
 
-  Future<User?> signIn() async {
-    if (_signInSession != null) {
-      return null;
-    }
-
+  Future<void> signIn({required UserRole userType}) async {
     final grant = oauth2.AuthorizationCodeGrant(
         identifier, authorizationEndpoint, tokenEndpoint,
         secret: secret, codeVerifier: '');
@@ -49,53 +49,36 @@ class GoogleSignInService {
     var authorizationUrl =
         grant.getAuthorizationUrl(redirectUrl, scopes: scopes);
 
-    final url = authorizationUrl.toString();
+    final updatedQueryParameters =
+        Map<String, String>.from(authorizationUrl.queryParameters)
+          ..remove('code_challenge')
+          ..remove('code_challenge_method');
 
-    final uri = Uri.parse(url);
-
-    final updatedQueryParameters = Map<String, String>.from(uri.queryParameters)
-      ..remove('code_challenge')
-      ..remove('code_challenge_method');
-
-    final updatedUri = uri.replace(queryParameters: updatedQueryParameters);
+    final updatedUri =
+        authorizationUrl.replace(queryParameters: updatedQueryParameters);
 
     _signInSession = _SignInSession(updatedUri.toString());
+
     final code = await _signInSession!.codeCompleter.future;
 
     if (code != null) {
-      final client = await grant.handleAuthorizationCode(code);
-      //final token = await _loginService.login(code: code);
-      const token = '';
+      final token = await _loginService.login(code: code, userType: userType);
 
-      // Obter informações do usuário usando a API do Google People
-      final response = await http.get(
-        Uri.parse(
-            'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos'),
-        headers: {
-          'Authorization': 'Bearer ${client.credentials.accessToken}',
-        },
-      );
+      if (token != null) {
+        GraphQLConfig().setToken(token);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final userData = await _userService.getUser();
 
         final user = User(
-          accessToken: client.credentials.accessToken,
-          refreshToken: client.credentials.refreshToken,
-          idToken: client.credentials.idToken!,
           token: token,
-          email: data['emailAddresses'][0]['value'],
-          name: data['names'][0]['displayName'],
-          photoUrl: data['photos'][0]['url'],
+          userRole: userType,
+          name: userData?['name'],
+          email: userData?['email'],
+          photoUrl: userData?['photoUrl'],
         );
 
-        return user;
-      } else {
-        _logger.e('Failed to get user data: ${response.body}');
-        return null;
+        authState.setUser(user);
       }
-    } else {
-      return null;
     }
   }
 }
