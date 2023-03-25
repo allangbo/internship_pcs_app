@@ -18,6 +18,25 @@
             "flutterMode": "profile"
         },
         {
+            "name": "base_app (debug mode)",
+            "cwd": "base_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--web-port=5000",
+                "--web-browser-flag",
+                "--disable-web-security"
+            ]
+        },
+        {
+            "name": "base_app (release mode)",
+            "cwd": "base_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
             "name": "base_app (release mode)",
             "cwd": "base_app",
             "request": "launch",

@@ -1,6 +1,7 @@
-name: micro_core
+name: micro_app_login
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: 'none'
 homepage:
 
 environment:
@@ -9,9 +10,18 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
-  
+    sdk: flutter 
+  micro_core:
+    path: ../micro_core
+  micro_commons:
+    path: ../micro_commons
   graphql_flutter: ^5.1.2
+  http: ^0.13.5 
+  google_sign_in: ^6.0.2
+  oauth2: ^2.0.1
+  logger: ^1.3.0
+  provider: ^6.0.1
+
 
 dev_dependencies:
   flutter_test:
@@ -23,6 +33,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - lib/assets/images/
 
   # To add assets to your package, add an assets section, like this:
   # assets:
