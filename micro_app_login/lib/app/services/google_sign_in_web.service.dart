@@ -1,11 +1,12 @@
 import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'package:micro_app_login/app/graphql_config.dart';
 import 'package:micro_app_login/app/services/login.service.dart';
 import 'package:micro_app_login/app/services/user.service.dart';
+import 'package:micro_app_login/app/uri.dart';
 import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/entities/user.dart';
+import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 
 import 'package:oauth2/oauth2.dart' as oauth2;
@@ -65,7 +66,7 @@ class GoogleSignInService {
       final token = await _loginService.login(code: code, userType: userType);
 
       if (token != null) {
-        GraphQLConfig().setToken(token);
+        GraphQLConfig(url: Uris.uriBase).setToken(token);
 
         final userData = await _userService.getUser();
 

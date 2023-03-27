@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:micro_app_publish_curricula/app/graphql_config.dart';
+import 'package:micro_app_publish_curricula/app/uri.dart';
 import 'package:micro_commons/app/entities/curriculum.dart';
+import 'package:micro_commons/app/graphql_config.dart';
 
 class CurriculaService {
-  final GraphQLClient _client = GraphQLConfig().getGraphQLClient();
+  final GraphQLClient _client =
+      GraphQLConfig(url: Uris.uriBase).getGraphQLClient();
   final Logger _logger = Logger();
 
   String publishCurriculaMutation = '''

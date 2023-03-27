@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:micro_app_login/app/graphql_config.dart';
+import 'package:micro_app_login/app/uri.dart';
+import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 
 class LoginService {
-  final GraphQLClient _client = GraphQLConfig().getGraphQLClient();
+  final GraphQLClient _client =
+      GraphQLConfig(url: Uris.uriBase).getGraphQLClient();
   final Logger _logger = Logger();
 
   String loginMutation = '''

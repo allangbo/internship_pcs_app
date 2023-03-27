@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:micro_app_publish_curricula/app/graphql_config.dart';
 import 'package:micro_app_publish_curricula/app/pages/publish_curricula_multi_form.page.dart';
 import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
+import 'package:micro_app_publish_curricula/app/uri.dart';
 import 'package:micro_commons/app/auth_route.dart';
+import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/pages/error_page.dart';
 import 'package:micro_commons/app/pages/success_page.dart';
 import 'package:micro_commons/app/shared_routes.dart';
@@ -12,7 +13,8 @@ import 'package:micro_core/app/micro_core_utils.dart';
 
 class PublishCurriculaResolver implements MicroApp {
   _wrapWithGraphQLProvider(Widget widget) {
-    ValueNotifier<GraphQLClient> client = GraphQLConfig().graphInit();
+    ValueNotifier<GraphQLClient> client =
+        GraphQLConfig(url: Uris.uriBase).graphInit();
 
     return GraphQLProvider(
       client: client,

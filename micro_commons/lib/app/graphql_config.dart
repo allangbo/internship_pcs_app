@@ -3,7 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLConfig {
   static final GraphQLConfig _instance = GraphQLConfig._internal();
-  factory GraphQLConfig({String? url}) {
+  factory GraphQLConfig({required String url}) {
     _instance._setUrl(url);
     return _instance;
   }
