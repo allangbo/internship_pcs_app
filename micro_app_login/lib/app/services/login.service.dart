@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:micro_app_login/app/uri.dart';
 import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
+import 'package:universal_html/html.dart';
 
 class LoginService {
   final GraphQLClient _client =
@@ -18,6 +19,12 @@ class LoginService {
       }
     ''';
 
+  String getBaseUrl() {
+    String baseUrl =
+        '${window.location.protocol}//${window.location.host}/callback.html';
+    return baseUrl;
+  }
+
   static const userRoleNames = {
     UserRole.aluno: 'STUDENT',
     UserRole.professor: 'TEACHER',
@@ -27,7 +34,11 @@ class LoginService {
   Future<String?> login(
       {required String code, required UserRole userType}) async {
     final variables = {
-      'input': {'code': code, 'userType': userRoleNames[userType]}
+      'input': {
+        'code': code,
+        'userType': userRoleNames[userType],
+        'redirectUri': getBaseUrl()
+      }
     };
 
     final options = MutationOptions(
