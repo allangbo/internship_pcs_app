@@ -17,7 +17,7 @@
     }
     let code = findGetParameter('code');
 
-    window.opener.postMessage(code, "http://localhost:5000");
+    window.opener.postMessage(code, window.location.protocol + '//' + window.location.host);
     window.close();
 </script>
 

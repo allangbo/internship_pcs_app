@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:micro_app_login/app/services/google_sign_in_web.service.dart';
+import 'package:micro_app_login/app/services/login.service.dart';
 import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
 import 'package:micro_commons/app/shared_routes.dart';
@@ -18,6 +19,7 @@ class _LoginWebPageState extends State<LoginWebPage> {
   bool _isLoading = false;
   final _logger = Logger();
   UserRole _selectedRole = UserRole.aluno;
+  final _loginService = LoginService();
 
   Future<void> _handleSignIn(BuildContext context) async {
     setState(() {
@@ -31,7 +33,7 @@ class _LoginWebPageState extends State<LoginWebPage> {
         identifier:
             '249948252936-da6r3lln1thpehq374da1olkf2c4aphg.apps.googleusercontent.com',
         secret: '',
-        baseUrl: 'http://localhost:5000',
+        baseUrl: _loginService.getBaseUrl(),
         scopes: [
           'https://www.googleapis.com/auth/userinfo.email',
           'https://www.googleapis.com/auth/userinfo.profile',
