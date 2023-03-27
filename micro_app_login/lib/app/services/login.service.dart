@@ -20,8 +20,7 @@ class LoginService {
     ''';
 
   String getBaseUrl() {
-    String baseUrl =
-        '${window.location.protocol}//${window.location.host}/callback.html';
+    String baseUrl = '${window.location.protocol}//${window.location.host}';
     return baseUrl;
   }
 
@@ -37,7 +36,7 @@ class LoginService {
       'input': {
         'code': code,
         'userType': userRoleNames[userType],
-        'redirectUri': getBaseUrl()
+        'redirectUri': '${getBaseUrl()}/callback.html'
       }
     };
 
