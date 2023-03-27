@@ -1,6 +1,7 @@
 import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_app_list_vacancies/app/list_vacancies_routes.dart';
+import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
 import 'package:micro_commons/app/shared_routes.dart';
 
@@ -89,7 +90,8 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/publish_curricula.png',
                   label: 'Publicar Currículo',
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SharedRoutes.home);
+                    Navigator.of(context)
+                        .pushNamed(PublishCurriculaRoutes.publishCurricula);
                   },
                 ),
               ],
