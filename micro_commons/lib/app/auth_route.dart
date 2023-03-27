@@ -15,6 +15,7 @@ class AuthRoute extends StatelessWidget {
         if (authState.isAuthenticated) {
           return builder(context, authState);
         } else {
+          //return builder(context, authState);
           return const RedirectToLogin();
         }
       },

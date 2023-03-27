@@ -47,6 +47,9 @@ dependencies:
   micro_app_login:
     path: ../micro_app_login
 
+  micro_app_publish_curricula:
+    path: ../micro_app_publish_curricula
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
