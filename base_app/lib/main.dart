@@ -6,6 +6,7 @@ import 'package:micro_app_list_vacancies/app/list_vacancies_resolver.dart';
 import 'package:micro_app_login/app/login_resolver.dart';
 import 'package:micro_app_publish_curricula/app/publish_curricula_resolver.dart';
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
+import 'package:micro_app_list_curricula/app/list_curricula_resolver.dart';
 import 'package:micro_commons/app/auth_route.dart';
 import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/routes.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget with BaseApp {
         PublishVacancyResolver(),
         ListVacanciesResolver(),
         LoginResolver(),
-        PublishCurriculaResolver()
+        PublishCurriculaResolver(),
+        ListCurriculaResolver()
       ];
 }

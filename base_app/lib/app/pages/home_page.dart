@@ -67,29 +67,47 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomButton(
-                  imageUrl: 'lib/assets/images/publish_vacancy.png',
-                  label: 'Publicar Vaga',
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(Routes.publishVacancy);
-                  },
+                Column(
+                  children: [
+                    CustomButton(
+                      imageUrl: 'lib/assets/images/publish_vacancy.png',
+                      label: 'Publicar Vaga',
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.publishVacancy);
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 20)),
+                    CustomButton(
+                      imageUrl: 'lib/assets/images/list_vacancies.png',
+                      label: 'Listar Vagas',
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.listVacancies);
+                      },
+                    )
+                  ],
                 ),
-                const SizedBox(width: 16),
-                CustomButton(
-                  imageUrl: 'lib/assets/images/list_vacancies.png',
-                  label: 'Listar Vagas',
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(Routes.listVacancies);
-                  },
-                ),
-                const SizedBox(width: 16),
-                CustomButton(
-                  imageUrl: 'lib/assets/images/publish_curricula.png',
-                  label: 'Publicar Currículo',
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(Routes.publishCurricula);
-                  },
+                const SizedBox(width: 26),
+                Column(
+                  children: [
+                    CustomButton(
+                      imageUrl: 'lib/assets/images/publish_curricula.png',
+                      label: 'Publicar Currículo',
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Routes.publishCurricula);
+                      },
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 20)),
+                    CustomButton(
+                      imageUrl: 'lib/assets/images/list_curricula.png',
+                      label: 'Currículos',
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.listCurricula);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

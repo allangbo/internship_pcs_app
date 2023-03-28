@@ -1,54 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_list_vacancies/app/components/vacancy_item.dart';
-import 'package:micro_app_list_vacancies/app/services/list_vacancies.service.dart';
-import 'package:micro_commons/app/entities/internship_vacancy.dart';
+import 'package:micro_app_list_curricula/app/components/curricula_item.dart';
+import 'package:micro_app_list_curricula/app/services/list_curricula_service.dart';
+import 'package:micro_commons/app/entities/curriculum.dart';
 
-class ListVacanciesPage extends StatefulWidget {
-  const ListVacanciesPage({Key? key}) : super(key: key);
+class ListCurriculaPage extends StatefulWidget {
+  const ListCurriculaPage({Key? key}) : super(key: key);
 
   @override
-  State<ListVacanciesPage> createState() => _ListVacanciesPageState();
+  State<ListCurriculaPage> createState() => _ListCurriculaPageState();
 }
 
-class _ListVacanciesPageState extends State<ListVacanciesPage> {
-  final _listVacanciesService = ListVacanciesService();
-  List<InternshipVacancy> _vacancies = [];
-  List<InternshipVacancy> _filteredVacancies = [];
-  List<InternshipVacancy> _originalVacancies = [];
+class _ListCurriculaPageState extends State<ListCurriculaPage> {
+  final _listCurriculasService = ListCurriculaService();
+  List<Curriculum> _curriculas = [];
+  List<Curriculum> _filteredCurriculas = [];
+  List<Curriculum> _originalCurriculas = [];
   bool _isLoading = true;
   String _searchQuery = '';
 
-  Widget _buildVacancyItem(InternshipVacancy vacancy) {
-    return VacancyItem(
-        name: vacancy.name,
-        company: 'Nubank',
-        area: vacancy.area ?? '',
-        imageUrl: '',
-        salary: 2000,
-        location: vacancy.city ?? '');
+  Widget _buildCurriculaItem(Curriculum curricula) {
+    return CurriculaItem(
+      curricula: curricula,
+    );
   }
 
-  void _searchVacancies(String query) {
+  void _searchCurriculas(String query) {
     setState(() {
       _searchQuery = query;
     });
     if (query.isEmpty) {
       setState(() {
-        _filteredVacancies = [];
-        _vacancies = _originalVacancies;
+        _filteredCurriculas = [];
+        _curriculas = _originalCurriculas;
       });
     } else {
-      final filteredVacancies = _originalVacancies.where((vacancy) {
-        final name = vacancy.name.toLowerCase();
-        const company = '';
-        final area = vacancy.area?.toLowerCase() ?? '';
-        return name.contains(query.toLowerCase()) ||
-            company.contains(query.toLowerCase()) ||
-            area.contains(query.toLowerCase());
+      final filteredCurriculas = _originalCurriculas.where((curricula) {
+        final name = curricula.name.toLowerCase();
+        return name.contains(query.toLowerCase());
       }).toList();
       setState(() {
-        _filteredVacancies = filteredVacancies;
-        _vacancies = filteredVacancies;
+        _filteredCurriculas = filteredCurriculas;
+        _curriculas = filteredCurriculas;
       });
     }
   }
@@ -61,7 +53,7 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
           padding: const EdgeInsets.all(10),
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'Buscar vagas...',
+              hintText: 'Buscar currículos...',
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -72,20 +64,20 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
                 borderSide: const BorderSide(color: Colors.transparent),
               ),
               filled: true,
-              fillColor: ListVacanciesStyle.searchFieldColor,
+              fillColor: ListCurriculasStyle.searchFieldColor,
             ),
             onChanged: (query) {
               setState(() {
                 _searchQuery = query;
               });
-              _searchVacancies(query);
+              _searchCurriculas(query);
             },
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 27, bottom: 10),
           child: Text(
-            '${_vacancies.length} vagas encontradas',
+            '${_curriculas.length} currículos encontrados',
             style: const TextStyle(
               fontSize: 16,
               fontFamily: 'Poppins',
@@ -97,26 +89,26 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
     );
   }
 
-  Widget _buildListViewVacancies() {
+  Widget _buildListViewCurriculas() {
     final vacanciesToDisplay =
-        _filteredVacancies.isNotEmpty ? _filteredVacancies : _vacancies;
+        _filteredCurriculas.isNotEmpty ? _filteredCurriculas : _curriculas;
     return ListView.builder(
-      padding: ListVacanciesStyle.listViewPadding,
+      padding: ListCurriculasStyle.listViewPadding,
       itemCount: vacanciesToDisplay.length,
       itemBuilder: (BuildContext context, int index) {
-        final vacancy = vacanciesToDisplay[index];
-        return _buildVacancyItem(vacancy);
+        final curriculum = vacanciesToDisplay[index];
+        return _buildCurriculaItem(curriculum);
       },
     );
   }
 
-  void _getVacancies() async {
-    final vacancies = await _listVacanciesService.getVacancies();
+  void _getCurriculas() async {
+    final curriculas = await _listCurriculasService.getCurriculas();
 
-    if (vacancies != null) {
+    if (curriculas != null) {
       setState(() {
-        _originalVacancies = vacancies;
-        _vacancies = vacancies;
+        _originalCurriculas = curriculas;
+        _curriculas = curriculas;
       });
     }
 
@@ -128,7 +120,7 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
   @override
   void initState() {
     super.initState();
-    _getVacancies();
+    _getCurriculas();
   }
 
   @override
@@ -145,13 +137,13 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
           ),
         ],
         title: const Text(
-          "Vagas Publicadas",
+          "Currículos",
         ),
         centerTitle: true,
       ),
       body: Container(
         decoration: const BoxDecoration(
-          color: ListVacanciesStyle.containerColor,
+          color: ListCurriculasStyle.containerColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,11 +153,12 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : _vacancies.isEmpty
-                      ? const Center(child: Text('Nenhuma vaga encontrada'))
-                      : _filteredVacancies.isEmpty && _searchQuery.isNotEmpty
-                          ? const Center(child: Text('Nenhuma vaga encontrada'))
-                          : _buildListViewVacancies(),
+                  : _curriculas.isEmpty
+                      ? const Center(child: Text('Nenhum currículo encontrado'))
+                      : _filteredCurriculas.isEmpty && _searchQuery.isNotEmpty
+                          ? const Center(
+                              child: Text('Nenhum currículo encontrado'))
+                          : _buildListViewCurriculas(),
             ),
           ],
         ),
@@ -174,7 +167,7 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
   }
 }
 
-class ListVacanciesStyle {
+class ListCurriculasStyle {
   static const Color whiteColor = Colors.white;
   static const Color containerColor = Color.fromRGBO(250, 250, 253, 1);
   static const Color primaryColor = Color.fromRGBO(53, 104, 153, 1);
