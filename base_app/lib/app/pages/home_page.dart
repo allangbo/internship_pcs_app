@@ -1,9 +1,9 @@
 import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_app_list_vacancies/app/list_vacancies_routes.dart';
-import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
-import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/auth_state.dart';
+import 'package:micro_commons/app/graphql_config.dart';
+import 'package:micro_commons/app/routes.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final String username;
@@ -20,15 +20,15 @@ class HomePage extends StatelessWidget {
           style: CustomAppBarStyle.titleStyle,
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
         actions: [
           IconButton(
             onPressed: () {
-              // implementar logout
+              GraphQLConfig(url: '').setToken(null);
+              final authState = Provider.of<AuthState>(context, listen: false);
+              authState.setUser(null);
+              Navigator.of(context).pushReplacementNamed(Routes.home);
             },
             icon: const Icon(Icons.logout),
-            color: CustomAppBarStyle.iconColor,
           ),
         ],
       ),
@@ -72,8 +72,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/publish_vacancy.png',
                   label: 'Publicar Vaga',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(PublishVacancyRoutes.publishVacancy);
+                    Navigator.of(context).pushNamed(Routes.publishVacancy);
                   },
                 ),
                 const SizedBox(width: 16),
@@ -81,8 +80,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/list_vacancies.png',
                   label: 'Listar Vagas',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(ListVacanciesRoutes.listVacancies);
+                    Navigator.of(context).pushNamed(Routes.listVacancies);
                   },
                 ),
                 const SizedBox(width: 16),
@@ -90,8 +88,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/publish_curricula.png',
                   label: 'Publicar Currículo',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(PublishCurriculaRoutes.publishCurricula);
+                    Navigator.of(context).pushNamed(Routes.publishCurricula);
                   },
                 ),
               ],
@@ -106,10 +103,7 @@ class HomePage extends StatelessWidget {
 class CustomAppBarStyle {
   static const titleStyle = TextStyle(
     fontFamily: 'Poppins',
-    color: Color(0xff0c0c26),
   );
-
-  static const iconColor = Color(0xff0c0c26);
 }
 
 class CustomTextStyle {

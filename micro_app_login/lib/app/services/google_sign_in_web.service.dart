@@ -10,7 +10,6 @@ import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:provider/provider.dart';
 
 class GoogleSignInService {
   final authorizationEndpoint =

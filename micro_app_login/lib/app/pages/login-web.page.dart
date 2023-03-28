@@ -3,8 +3,9 @@ import 'package:logger/logger.dart';
 import 'package:micro_app_login/app/services/google_sign_in_web.service.dart';
 import 'package:micro_app_login/app/services/login.service.dart';
 import 'package:micro_commons/app/auth_state.dart';
+import 'package:micro_commons/app/components/custom_dropdown_field.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class LoginWebPage extends StatefulWidget {
 class _LoginWebPageState extends State<LoginWebPage> {
   bool _isLoading = false;
   final _logger = Logger();
-  UserRole _selectedRole = UserRole.aluno;
+  UserRole _selectedRole = UserRole.STUDENT;
   final _loginService = LoginService();
 
   Future<void> _handleSignIn(BuildContext context) async {
@@ -44,7 +45,7 @@ class _LoginWebPageState extends State<LoginWebPage> {
       await googleSignIn.signIn(userType: _selectedRole);
       final user = authState.user;
       if (user != null) {
-        navigator.pushReplacementNamed(SharedRoutes.home);
+        navigator.pushReplacementNamed(Routes.home);
       }
     } catch (error) {
       _logger.e(error);
@@ -53,23 +54,6 @@ class _LoginWebPageState extends State<LoginWebPage> {
         _isLoading = false;
       });
     }
-  }
-
-  Widget _userRoleDropdown() {
-    return DropdownButton<UserRole>(
-      value: _selectedRole,
-      onChanged: (UserRole? newValue) {
-        setState(() {
-          _selectedRole = newValue!;
-        });
-      },
-      items: UserRole.values.map<DropdownMenuItem<UserRole>>((UserRole value) {
-        return DropdownMenuItem<UserRole>(
-          value: value,
-          child: Text(value.toString().split('.').last),
-        );
-      }).toList(),
-    );
   }
 
   @override
@@ -82,10 +66,35 @@ class _LoginWebPageState extends State<LoginWebPage> {
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            _userRoleDropdown(),
+            const Text(
+              'Por favor, selecione o tipo do usuário:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30.0),
+            Container(
+              width: 327,
+              height: 56,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                    color: CustomDropdownFormFieldStyles.borderColor),
+              ),
+              child: CustomDropdownFormField(
+                items: UserRole.values.map((e) => e.name).toList(),
+                itemCaptions: UserRole.values.map((e) => e.caption).toList(),
+                label: '',
+                onSaved: (value) {
+                  _selectedRole = UserRole.values.firstWhere(
+                      (e) => e.name == value,
+                      orElse: () => UserRole.STUDENT);
+                },
+                value: _selectedRole.name,
+              ),
+            ),
+            const SizedBox(height: 30.0),
             CustomFormButton(
               onPressed: () => _handleSignIn(context),
               label: 'FAZER LOGIN COM O GOOGLE',

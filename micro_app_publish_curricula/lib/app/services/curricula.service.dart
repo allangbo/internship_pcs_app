@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:micro_app_publish_curricula/app/uri.dart';
@@ -34,22 +32,5 @@ class CurriculaService {
     }
 
     return result.data?['createCurriculum']['id'];
-  }
-
-  getPublishCurriculaMutationWidget(
-      Widget Function(
-              MultiSourceResult<Object?> Function(Map<String, dynamic>,
-                  {Object? optimisticResult}),
-              QueryResult<Object?>?)
-          builder,
-      FutureOr<void> Function(Map<String, dynamic>?)? onCompleted,
-      {FutureOr<void> Function(OperationException?)? onError}) {
-    return Mutation(
-      options: MutationOptions(
-          document: gql(publishCurriculaMutation),
-          onCompleted: onCompleted,
-          onError: onError),
-      builder: builder,
-    );
   }
 }

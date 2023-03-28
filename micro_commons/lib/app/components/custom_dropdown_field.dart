@@ -15,16 +15,18 @@ class CustomDropdownFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
   final List<String> items;
+  final List<String> itemCaptions;
   final String label;
 
   const CustomDropdownFormField({
     super.key,
     required this.items,
+    required this.itemCaptions,
     required this.label,
     this.validator,
     this.onSaved,
     this.value,
-  });
+  }) : assert(items.length == itemCaptions.length);
 
   @override
   State<CustomDropdownFormField> createState() =>
@@ -51,11 +53,11 @@ class _CustomDropdownFormFieldState extends State<CustomDropdownFormField> {
           _value = newValue;
         });
       },
-      items: widget.items.map<DropdownMenuItem<String>>((String value) {
+      items: widget.items.asMap().entries.map<DropdownMenuItem<String>>((entry) {
         return DropdownMenuItem<String>(
-          value: value,
+          value: entry.value,
           child: Text(
-            value,
+            widget.itemCaptions[entry.key],
             style: const TextStyle(
               fontFamily: CustomDropdownFormFieldStyles.fontFamily,
               fontSize: CustomDropdownFormFieldStyles.fontSize,

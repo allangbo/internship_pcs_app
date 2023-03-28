@@ -8,7 +8,7 @@ import 'package:micro_app_publish_curricula/app/publish_curricula_resolver.dart'
 import 'package:micro_app_publish_vacancy/app/publish_vacancy_resolver.dart';
 import 'package:micro_commons/app/auth_route.dart';
 import 'package:micro_commons/app/auth_state.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 import 'package:micro_core/app/base_app.dart';
 import 'package:micro_core/app/micro_app.dart';
 import 'package:micro_core/app/micro_core_utils.dart';
@@ -26,7 +26,11 @@ class MyApp extends StatelessWidget with BaseApp {
     super.registerRoutes();
 
     return ChangeNotifierProvider(
-      create: (context) => AuthState(),
+      create: (context) {
+        final authState = AuthState();
+        authState.init();
+        return authState;
+      },
       child: MaterialApp(
         title: 'Internship 4.0',
         localizationsDelegates: const [
@@ -42,14 +46,14 @@ class MyApp extends StatelessWidget with BaseApp {
         ),
         navigatorKey: navigatorKey,
         onGenerateRoute: super.generateRoute,
-        initialRoute: '/',
+        initialRoute: Routes.home,
       ),
     );
   }
 
   @override
   Map<String, WidgetBuilderArgs> get baseRoutes => {
-        SharedRoutes.home: (context, args) => AuthRoute(
+        Routes.home: (context, args) => AuthRoute(
               builder: (context, authState) => HomePage(
                 username: authState.user?.name ?? '',
               ),

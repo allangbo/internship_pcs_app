@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:micro_app_list_vacancies/app/components/vacancy_item.dart';
-import 'package:micro_app_list_vacancies/app/graphql_config.dart';
-import 'package:micro_app_list_vacancies/app/list_vacancies_routes.dart';
 import 'package:micro_app_list_vacancies/app/services/list_vacancies.service.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
 
@@ -113,23 +110,18 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
     );
   }
 
-  void _getVacancies() {
-    final query = _listVacanciesService.listVacanciesQuery;
-    GraphQLClient client = GraphQLConfig.getGraphQLClient();
-    client.query(QueryOptions(document: gql(query))).then((result) {
-      if (result.hasException) {
-        Navigator.pushReplacementNamed(context, ListVacanciesRoutes.errorPage);
-      }
-      final data = result.data?['getAllPositions'];
-      if (data != null) {
-        final vacancies =
-            List.from(data).map((e) => InternshipVacancy.fromJson(e)).toList();
-        setState(() {
-          _originalVacancies = vacancies;
-          _vacancies = vacancies;
-          _isLoading = false;
-        });
-      }
+  void _getVacancies() async {
+    final vacancies = await _listVacanciesService.getVacancies();
+
+    if (vacancies != null) {
+      setState(() {
+        _originalVacancies = vacancies;
+        _vacancies = vacancies;
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
     });
   }
 

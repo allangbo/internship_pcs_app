@@ -24,18 +24,12 @@ class LoginService {
     return baseUrl;
   }
 
-  static const userRoleNames = {
-    UserRole.aluno: 'STUDENT',
-    UserRole.professor: 'TEACHER',
-    UserRole.empresa: 'COMPANY',
-  };
-
   Future<String?> login(
       {required String code, required UserRole userType}) async {
     final variables = {
       'input': {
         'code': code,
-        'userType': userRoleNames[userType],
+        'userType': userType.name,
         'redirectUri': '${getBaseUrl()}/callback.html'
       }
     };

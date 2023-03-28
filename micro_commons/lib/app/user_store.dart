@@ -13,7 +13,7 @@ class UserPreferences {
       'name': user.name,
       'photoUrl': user.photoUrl,
       'token': user.token,
-      'userRole': user.userRole
+      'userRole': user.userRole.name
     });
     await sharedPreferences.setString(_userKey, userData);
   }
@@ -24,18 +24,17 @@ class UserPreferences {
     if (userData != null) {
       final userMap = jsonDecode(userData) as Map<String, dynamic>;
 
-      // Convert the userRole string to a UserRole enum value
-      final userRoleString = userMap['userRole'] as String;
+      final userRoleName = userMap['userRole'] as String;
       final userRole = UserRole.values.firstWhere(
-        (e) => e.toString().split('.')[1] == userRoleString,
-        orElse: () => UserRole.aluno, // Set a default value if not found
+        (e) => e.name == userRoleName,
+        orElse: () => UserRole.STUDENT,
       );
 
       return User(
-        email: userMap['email'],
-        name: userMap['name'],
-        photoUrl: userMap['photoUrl'],
-        token: userMap['token'],
+        email: userMap['email'] ?? '',
+        name: userMap['name'] ?? '',
+        photoUrl: userMap['photoUrl'] ?? '',
+        token: userMap['token'] ?? '',
         userRole: userRole,
       );
     }

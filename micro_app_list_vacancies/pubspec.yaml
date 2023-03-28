@@ -17,6 +17,7 @@ dependencies:
     path: ../micro_commons
   graphql_flutter: ^5.1.2
   intl: any
+  logger: ^1.3.0
 
 dev_dependencies:
   flutter_test:
