@@ -2,8 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_dropdown_field.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_text_form_field.dart';
+import 'package:micro_commons/app/components/custom_dropdown_field.dart';
+import 'package:micro_commons/app/components/custom_text_form_field.dart';
 import 'package:validatorless/validatorless.dart';
 
 String requiredMessage = 'Este campo é obrigatório';

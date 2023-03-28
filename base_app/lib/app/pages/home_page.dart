@@ -2,8 +2,7 @@ import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_app_list_vacancies/app/list_vacancies_routes.dart';
 import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
-import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 
 class HomePage extends StatelessWidget {
   final String username;
@@ -72,8 +71,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/publish_vacancy.png',
                   label: 'Publicar Vaga',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(PublishVacancyRoutes.publishVacancy);
+                    Navigator.of(context).pushNamed(Routes.publishVacancy);
                   },
                 ),
                 const SizedBox(width: 16),

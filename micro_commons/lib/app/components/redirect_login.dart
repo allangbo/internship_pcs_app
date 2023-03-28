@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 
 class RedirectToLogin extends StatelessWidget {
   const RedirectToLogin({super.key});
@@ -8,7 +8,7 @@ class RedirectToLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamedAndRemoveUntil(
-        SharedRoutes.login,
+        Routes.login,
         (Route<dynamic> route) => false,
       );
     });

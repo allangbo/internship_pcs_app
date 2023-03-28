@@ -4,10 +4,10 @@ import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_first_f
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_second_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_third_form.dart';
-import 'package:micro_app_publish_vacancy/app/publish_vacancy_routes.dart';
 import 'package:micro_app_publish_vacancy/app/services/vacancy.service.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
+import 'package:micro_commons/app/routes.dart';
 
 class PublishVacancyMultiFormPage extends StatefulWidget {
   const PublishVacancyMultiFormPage({super.key});
@@ -121,10 +121,10 @@ class _PublishVacancyMultiFormPageState
       onCompleted(dynamic resultData) {
         if (resultData != null) {
           Navigator.pushReplacementNamed(
-              context, PublishVacancyRoutes.successPage);
+              context, Routes.publishVacancySuccessPage);
         } else {
           Navigator.pushReplacementNamed(
-              context, PublishVacancyRoutes.errorPage);
+              context, Routes.publishVacancyErrorPage);
         }
         setState(() {
           _isLoading = false;

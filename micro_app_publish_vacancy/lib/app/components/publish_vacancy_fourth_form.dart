@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_publish_vacancy/app/components/custom_list_tile.dart';
+import 'package:micro_commons/app/components/custom_list_title.dart';
 
 class PublishVacancyFourthForm extends StatefulWidget {
   const PublishVacancyFourthForm({Key? key}) : super(key: key);

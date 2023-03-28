@@ -4,7 +4,7 @@ import 'package:micro_app_login/app/pages/login-web.page.dart';
 import 'package:micro_app_login/app/pages/login.page.dart';
 import 'package:micro_app_login/app/uri.dart';
 import 'package:micro_commons/app/graphql_config.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 import 'package:micro_core/app/micro_app.dart';
 import 'package:micro_core/app/micro_core_utils.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -25,7 +25,7 @@ class LoginResolver implements MicroApp {
 
   @override
   Map<String, WidgetBuilderArgs> get routes => {
-        SharedRoutes.login: (context, args) => _wrapWithGraphQLProvider(
+        Routes.login: (context, args) => _wrapWithGraphQLProvider(
             kIsWeb ? const LoginWebPage() : const LoginPage()),
       };
 }

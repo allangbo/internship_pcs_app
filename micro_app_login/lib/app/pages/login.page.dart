@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   clientId:
@@ -22,6 +22,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   GoogleSignInAccount? _currentUser;
+  final Logger _logger = Logger();
 
   @override
   void initState() {
@@ -38,7 +39,7 @@ class LoginPageState extends State<LoginPage> {
     try {
       await _googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      _logger.e(error);
     }
   }
 

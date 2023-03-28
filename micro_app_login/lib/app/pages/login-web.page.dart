@@ -4,7 +4,7 @@ import 'package:micro_app_login/app/services/google_sign_in_web.service.dart';
 import 'package:micro_app_login/app/services/login.service.dart';
 import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
-import 'package:micro_commons/app/shared_routes.dart';
+import 'package:micro_commons/app/routes.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +44,7 @@ class _LoginWebPageState extends State<LoginWebPage> {
       await googleSignIn.signIn(userType: _selectedRole);
       final user = authState.user;
       if (user != null) {
-        navigator.pushReplacementNamed(SharedRoutes.home);
+        navigator.pushReplacementNamed(Routes.home);
       }
     } catch (error) {
       _logger.e(error);

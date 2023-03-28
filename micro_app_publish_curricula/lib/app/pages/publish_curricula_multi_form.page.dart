@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:micro_app_publish_curricula/app/components/publish_curricula_first_form.dart';
 import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
 import 'package:micro_app_publish_curricula/app/services/curricula.service.dart';
