@@ -13,4 +13,6 @@ class Routes {
       '/publish_curricula_success_page';
   static const String listVacancies = '/list_vacancies';
   static const String listVacanciesErrorPage = '/list_vacancies_error_page';
+  static const String listCurricula = '/list_curricula';
+  static const String listCurriculaErrorPage = '/list_curricula_error_page';
 }
