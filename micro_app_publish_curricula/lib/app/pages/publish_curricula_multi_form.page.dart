@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:micro_app_publish_curricula/app/components/publish_curricula_first_form.dart';
-import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
 import 'package:micro_app_publish_curricula/app/services/curricula.service.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
 import 'package:micro_commons/app/entities/curriculum.dart';
+import 'package:micro_commons/app/routes.dart';
 
 class PublishCurriculaMultiFormPage extends StatefulWidget {
   const PublishCurriculaMultiFormPage({super.key});
@@ -79,9 +79,9 @@ class _PublishCurriculaMultiFormPageState
       String? id = await _curriculaService.publishCurriculum(curriculum);
 
       if (id != null) {
-        navigator.pushReplacementNamed(PublishCurriculaRoutes.successPage);
+        navigator.pushReplacementNamed(Routes.publishCurriculaSuccessPage);
       } else {
-        navigator.pushReplacementNamed(PublishCurriculaRoutes.errorPage);
+        navigator.pushReplacementNamed(Routes.publishCurriculaErrorPage);
       }
       setState(() {
         _isLoading = false;

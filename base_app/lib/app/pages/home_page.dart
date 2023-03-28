@@ -1,7 +1,5 @@
 import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:micro_app_list_vacancies/app/list_vacancies_routes.dart';
-import 'package:micro_app_publish_curricula/app/publish_curricula_routes.dart';
 import 'package:micro_commons/app/routes.dart';
 
 class HomePage extends StatelessWidget {
@@ -79,8 +77,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/list_vacancies.png',
                   label: 'Listar Vagas',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(ListVacanciesRoutes.listVacancies);
+                    Navigator.of(context).pushNamed(Routes.listVacancies);
                   },
                 ),
                 const SizedBox(width: 16),
@@ -88,8 +85,7 @@ class HomePage extends StatelessWidget {
                   imageUrl: 'lib/assets/images/publish_curricula.png',
                   label: 'Publicar Currículo',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(PublishCurriculaRoutes.publishCurricula);
+                    Navigator.of(context).pushNamed(Routes.publishCurricula);
                   },
                 ),
               ],
