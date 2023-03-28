@@ -1,6 +1,7 @@
 class Routes {
   static const String home = '/';
   static const String login = '/login';
+  static const String loginErrorPage = '/login_error_page';
   static const String publishVacancy = '/publish_vacancy';
   static const String publishVacancySuccessPage =
       '/publish_vacancy_success_page';
