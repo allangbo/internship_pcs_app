@@ -133,6 +133,7 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
                   const SizedBox(height: 16.0),
                   CustomDropdownFormField(
                     items: const ['Remoto', 'Presencial', 'Híbrido'],
+                    itemCaptions: const ['Remoto', 'Presencial', 'Híbrido'],
                     label: 'Modalidade de Estágio',
                     validator: Validatorless.required(requiredMessage),
                     onSaved: (value) {

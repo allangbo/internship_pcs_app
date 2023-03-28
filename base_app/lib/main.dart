@@ -26,7 +26,11 @@ class MyApp extends StatelessWidget with BaseApp {
     super.registerRoutes();
 
     return ChangeNotifierProvider(
-      create: (context) => AuthState(),
+      create: (context) {
+        final authState = AuthState();
+        authState.init();
+        return authState;
+      },
       child: MaterialApp(
         title: 'Internship 4.0',
         localizationsDelegates: const [
@@ -42,7 +46,7 @@ class MyApp extends StatelessWidget with BaseApp {
         ),
         navigatorKey: navigatorKey,
         onGenerateRoute: super.generateRoute,
-        initialRoute: '/',
+        initialRoute: Routes.home,
       ),
     );
   }

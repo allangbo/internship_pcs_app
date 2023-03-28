@@ -1,6 +1,9 @@
 import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/auth_state.dart';
+import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/routes.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final String username;
@@ -17,15 +20,15 @@ class HomePage extends StatelessWidget {
           style: CustomAppBarStyle.titleStyle,
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
         actions: [
           IconButton(
             onPressed: () {
-              // implementar logout
+              GraphQLConfig(url: '').setToken(null);
+              final authState = Provider.of<AuthState>(context, listen: false);
+              authState.setUser(null);
+              Navigator.of(context).pushReplacementNamed(Routes.home);
             },
             icon: const Icon(Icons.logout),
-            color: CustomAppBarStyle.iconColor,
           ),
         ],
       ),
@@ -100,10 +103,7 @@ class HomePage extends StatelessWidget {
 class CustomAppBarStyle {
   static const titleStyle = TextStyle(
     fontFamily: 'Poppins',
-    color: Color(0xff0c0c26),
   );
-
-  static const iconColor = Color(0xff0c0c26);
 }
 
 class CustomTextStyle {
