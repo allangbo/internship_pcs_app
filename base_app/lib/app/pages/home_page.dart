@@ -90,19 +90,6 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  Widget _getListCurriculaButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
-      child: CustomButton(
-        imageUrl: 'lib/assets/images/list_curricula.png',
-        label: 'Currículos',
-        onPressed: () {
-          Navigator.of(context).pushNamed(Routes.listCurricula);
-        },
-      ),
-    );
-  }
-
   Widget _getPublishCurriculaButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
@@ -231,6 +218,7 @@ class HomePage extends StatelessWidget {
           children: [
             _getProfileButton(context),
             _getPublishVacancyButton(context),
+            _getListApplicationButton(context)
           ],
         ),
         const SizedBox(width: 30),
@@ -252,14 +240,13 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             _getListStudentsButton(context),
-            _getListCurriculaButton(context),
             _getListApplicationButton(context),
+            _getListVacanciesButton(context),
           ],
         ),
         const SizedBox(width: 30),
         Column(
           children: [
-            _getListVacanciesButton(context),
             _getListCompaniesButton(context),
             _getNotificationsButton(context),
           ],

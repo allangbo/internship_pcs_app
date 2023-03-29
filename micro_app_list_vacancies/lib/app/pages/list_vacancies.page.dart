@@ -70,7 +70,8 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
                               title: e.name,
                               text1: e.company,
                               text2: e.scholarship != null
-                                  ? 'R\$ ${e.scholarship?.toStringAsFixed(2)}/mês'
+                                  //           ? 'R\$ ${e.scholarship?.toStringAsFixed(2)}/mês'
+                                  ? 'R\$2000,00/mês'
                                   : '',
                               imageUrl: e.imageUrl,
                               onAction: () => {

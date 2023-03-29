@@ -78,7 +78,8 @@ class _PublishCurriculaMultiFormPageState
           certificates: firstFormState.certificates);
       String? id = await _curriculaService.publishCurriculum(curriculum);
 
-      if (id != null) {
+      //todo: modificar essa linha e remover id == -1
+      if (id != null || id == '-1') {
         navigator.pushReplacementNamed(Routes.publishCurriculaSuccessPage);
       } else {
         navigator.pushReplacementNamed(Routes.publishCurriculaErrorPage);
