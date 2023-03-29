@@ -47,6 +47,7 @@ class _ListApplicationsPageState extends State<ListApplicationsPage> {
         company: 'Nubank',
         userId: '');
     _applications = [Application(id: '', vacancy: vacancy, userId: '')];
+
     //_getApplications();
   }
 
