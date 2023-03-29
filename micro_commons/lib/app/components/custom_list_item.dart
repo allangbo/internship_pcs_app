@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:micro_commons/app/components/custom_list.dart';
 
-class VacancyItemStyle {
+class CustomListItemStyle {
   static const Color whiteColor = Color(0xffffffff);
   static const Color shadowColor = Color(0x07000000);
   static const List<BoxShadow> boxShadow = [
@@ -26,49 +27,43 @@ class VacancyItemStyle {
   );
 }
 
-class VacancyItem extends StatelessWidget {
-  final String name;
-  final String company;
-  final String area;
-  final String imageUrl;
-  final double salary;
-  final String location;
-  final VoidCallback? onAction;
+class CustomListItem extends StatefulWidget {
+  final Item item;
 
-  const VacancyItem({
-    Key? key,
-    required this.name,
-    required this.company,
-    required this.area,
-    required this.imageUrl,
-    required this.salary,
-    required this.location,
-    this.onAction,
-  }) : super(key: key);
+  const CustomListItem({Key? key, required this.item}) : super(key: key);
 
+  @override
+  State<CustomListItem> createState() => _CustomListItemState();
+}
+
+class _CustomListItemState extends State<CustomListItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onAction,
+      onTap: widget.item.onAction,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: VacancyItemStyle.whiteColor,
+          color: CustomListItemStyle.whiteColor,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: VacancyItemStyle.boxShadow,
+          boxShadow: CustomListItemStyle.boxShadow,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 80,
-              height: 80,
-              margin: const EdgeInsets.only(right: 20),
+              width: 60,
+              height: 60,
+              margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: const DecorationImage(
+                borderRadius: BorderRadius.circular(40),
+                image: DecorationImage(
                   image: AssetImage(
-                      'packages/micro_app_list_vacancies/lib/assets/images/logo_nubank.png'),
+                    widget.item.imageUrl != null &&
+                            widget.item.imageUrl!.isNotEmpty
+                        ? widget.item.imageUrl!
+                        : 'packages/micro_commons/lib/assets/images/logo_nubank.png',
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -79,32 +74,31 @@ class VacancyItem extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Text(
-                    name,
-                    style: VacancyItemStyle.titleStyle,
+                    widget.item.title,
+                    style: CustomListItemStyle.titleStyle,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    company,
-                    style: VacancyItemStyle.subtitleStyle,
+                    widget.item.text2,
+                    style: CustomListItemStyle.subtitleStyle,
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'R\$ ${salary.toStringAsFixed(2)}/mês',
-                        style: VacancyItemStyle.subtitleStyle.copyWith(
+                        widget.item.text3 ?? '',
+                        style: CustomListItemStyle.subtitleStyle.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        location,
-                        style: VacancyItemStyle.subtitleStyle,
+                        widget.item.text4 ?? '',
+                        style: CustomListItemStyle.subtitleStyle,
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Divider(height: 1, thickness: 1, color: Colors.grey[300]),
                 ],
               ),
             ),
