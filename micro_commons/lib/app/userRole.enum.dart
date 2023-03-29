@@ -1,12 +1,12 @@
 // ignore: constant_identifier_names
-enum UserRole { STUDENT, TEACHER, COMPANY }
+enum UserRole { STUDENT, PROFESSOR, COMPANY }
 
 extension UserRoleExtension on UserRole {
   String get caption {
     switch (this) {
       case UserRole.STUDENT:
         return 'Estudante';
-      case UserRole.TEACHER:
+      case UserRole.PROFESSOR:
         return 'Professor';
       case UserRole.COMPANY:
         return 'Empresa';

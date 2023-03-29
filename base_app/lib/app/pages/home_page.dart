@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/routes.dart';
+import 'package:micro_commons/app/userRole.enum.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,6 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthState>(context, listen: false);
+
     return Scaffold(
       backgroundColor: const Color(0xfffafafd),
       appBar: AppBar(
@@ -24,7 +27,6 @@ class HomePage extends StatelessWidget {
           IconButton(
             onPressed: () {
               GraphQLConfig(url: '').setToken(null);
-              final authState = Provider.of<AuthState>(context, listen: false);
               authState.setUser(null);
               Navigator.of(context).pushReplacementNamed(Routes.home);
             },
@@ -32,88 +34,238 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Bem-vindo(a) de volta!',
-              style: CustomTextStyle.welcomeMessageStyle,
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  backgroundImage: AssetImage(
-                    'lib/assets/images/profile_pic.png',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                'Bem-vindo(a) de volta!',
+                style: CustomTextStyle.welcomeMessageStyle,
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircleAvatar(
+                    backgroundImage: AssetImage(
+                      'lib/assets/images/profile_pic.png',
+                    ),
+                    radius: 25,
                   ),
-                  radius: 25,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  username,
-                  style: CustomTextStyle.usernameStyle,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Serviços',
-              style: CustomTextStyle.servicesTitleStyle,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    CustomButton(
-                      imageUrl: 'lib/assets/images/publish_vacancy.png',
-                      label: 'Publicar Vaga',
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.publishVacancy);
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.only(bottom: 20)),
-                    CustomButton(
-                      imageUrl: 'lib/assets/images/list_vacancies.png',
-                      label: 'Listar Vagas',
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.listVacancies);
-                      },
-                    )
-                  ],
-                ),
-                const SizedBox(width: 26),
-                Column(
-                  children: [
-                    CustomButton(
-                      imageUrl: 'lib/assets/images/publish_curricula.png',
-                      label: 'Publicar Currículo',
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(Routes.publishCurricula);
-                      },
-                    ),
-                    const Padding(padding: EdgeInsets.only(bottom: 20)),
-                    CustomButton(
-                      imageUrl: 'lib/assets/images/list_curricula.png',
-                      label: 'Currículos',
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.listCurricula);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 10),
+                  Text(
+                    username,
+                    style: CustomTextStyle.usernameStyle,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Serviços',
+                style: CustomTextStyle.servicesTitleStyle,
+              ),
+              const SizedBox(height: 20),
+              //_getMenuButtons(context, authState)
+              _getCompanyMenuButtons(context),
+              _getStudentMenuButtons(context),
+              _getTeacherMenuButtons(context)
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  _getMenuButtons(BuildContext context, AuthState authState) {
+    final userType = authState.user?.userRole ?? UserRole.STUDENT;
+    switch (userType) {
+      case UserRole.COMPANY:
+        return _getCompanyMenuButtons(context);
+      case UserRole.PROFESSOR:
+        return _getTeacherMenuButtons(context);
+      case UserRole.STUDENT:
+        return _getStudentMenuButtons(context);
+      default:
+        return _getStudentMenuButtons(context);
+    }
+  }
+
+  Widget _getListCurriculaButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_curricula.png',
+        label: 'Currículos',
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.listCurricula);
+        },
+      ),
+    );
+  }
+
+  Widget _getPublishCurriculaButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/publish_curricula.png',
+        label: 'Enviar Currículo',
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.publishCurricula);
+        },
+      ),
+    );
+  }
+
+  Widget _getListVacanciesButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_vacancies.png',
+        label: 'Vagas',
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.listVacancies);
+        },
+      ),
+    );
+  }
+
+  Widget _getPublishVacancyButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/publish_vacancy.png',
+        label: 'Publicar Vaga',
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.publishVacancy);
+        },
+      ),
+    );
+  }
+
+  Widget _getProfileButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/profile.png',
+        label: 'Perfil',
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _getListApplicationButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_application.png',
+        label: 'Candidaturas',
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _getNotificationsButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/notifications.png',
+        label: 'Notificações',
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _getListStudentsButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_students.png',
+        label: 'Estudantes',
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _getListCompaniesButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_companies.png',
+        label: 'Empresas',
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _getStudentMenuButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            _getProfileButton(context),
+            _getListApplicationButton(context),
+            _getNotificationsButton(context),
+          ],
+        ),
+        const SizedBox(width: 30),
+        Column(
+          children: [
+            _getListVacanciesButton(context),
+            _getPublishCurriculaButton(context)
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _getCompanyMenuButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            _getProfileButton(context),
+            _getPublishVacancyButton(context),
+          ],
+        ),
+        const SizedBox(width: 30),
+        Column(
+          children: [
+            _getListVacanciesButton(context),
+            _getNotificationsButton(context)
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _getTeacherMenuButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            _getListStudentsButton(context),
+            _getListCurriculaButton(context),
+            _getListApplicationButton(context),
+          ],
+        ),
+        const SizedBox(width: 30),
+        Column(
+          children: [
+            _getListVacanciesButton(context),
+            _getListCompaniesButton(context),
+            _getNotificationsButton(context),
+          ],
+        ),
+      ],
     );
   }
 }
