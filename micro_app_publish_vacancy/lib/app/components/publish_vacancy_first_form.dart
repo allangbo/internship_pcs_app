@@ -27,7 +27,7 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
   late DateTime closingDate;
   late String modality;
   double? scholarship;
-  String? city;
+  String? location;
   String? area;
   String? benefits;
 
@@ -126,7 +126,7 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
                   CustomTextFormField(
                     label: 'Cidade',
                     onSaved: (value) {
-                      city = value!;
+                      location = value!;
                     },
                     type: TextInputType.text,
                   ),

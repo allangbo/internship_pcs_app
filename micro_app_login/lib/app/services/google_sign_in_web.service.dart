@@ -72,6 +72,7 @@ class GoogleSignInService {
         final user = User(
           token: token,
           userRole: userType,
+          id: userData?['id'],
           name: userData?['name'],
           email: userData?['email'],
           photoUrl: userData?['photoUrl'],

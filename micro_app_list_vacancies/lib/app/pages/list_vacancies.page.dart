@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:micro_app_list_vacancies/app/components/vacancy_item.dart';
 import 'package:micro_app_list_vacancies/app/services/list_vacancies.service.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
+import 'package:micro_commons/app/routes.dart';
 
 class ListVacanciesPage extends StatefulWidget {
   const ListVacanciesPage({Key? key}) : super(key: key);
@@ -20,12 +21,17 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
 
   Widget _buildVacancyItem(InternshipVacancy vacancy) {
     return VacancyItem(
-        name: vacancy.name,
-        company: 'Nubank',
-        area: vacancy.area ?? '',
-        imageUrl: '',
-        salary: 2000,
-        location: vacancy.city ?? '');
+      name: vacancy.name,
+      company: 'Nubank',
+      area: vacancy.area ?? '',
+      imageUrl: '',
+      salary: 2000,
+      location: vacancy.location ?? '',
+      onAction: () => {
+        Navigator.of(context)
+            .pushNamed(Routes.vacancyDetailsPage, arguments: {'id': vacancy.id})
+      },
+    );
   }
 
   void _searchVacancies(String query) {

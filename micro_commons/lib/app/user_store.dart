@@ -31,6 +31,7 @@ class UserPreferences {
       );
 
       return User(
+        id: userMap['id'] ?? '',
         email: userMap['email'] ?? '',
         name: userMap['name'] ?? '',
         photoUrl: userMap['photoUrl'] ?? '',

@@ -4,9 +4,11 @@ import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_fourth_
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_second_form.dart';
 import 'package:micro_app_publish_vacancy/app/components/publish_vacancy_third_form.dart';
 import 'package:micro_app_publish_vacancy/app/services/vacancy.service.dart';
+import 'package:micro_commons/app/auth_state.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
 import 'package:micro_commons/app/routes.dart';
+import 'package:provider/provider.dart';
 
 class PublishVacancyMultiFormPage extends StatefulWidget {
   const PublishVacancyMultiFormPage({super.key});
@@ -83,6 +85,7 @@ class _PublishVacancyMultiFormPageState
     final thirdFormState = _thirdFormKey.currentState;
     final fourthFormState = _fourthFormKey.currentState;
     final navigator = Navigator.of(context);
+    final authState = Provider.of<AuthState>(context, listen: false);
 
     if (_isCurrentStepValid()) {
       setState(() {
@@ -90,6 +93,8 @@ class _PublishVacancyMultiFormPageState
       });
 
       final InternshipVacancy vacancy = InternshipVacancy(
+          id: '',
+          userId: authState.user?.id ?? '',
           name: firstFormState!.name,
           openingDate: firstFormState.openingDate,
           closingDate: firstFormState.closingDate,
@@ -97,10 +102,11 @@ class _PublishVacancyMultiFormPageState
           requirements: thirdFormState!.requirements,
           modality: firstFormState.modality,
           scholarship: firstFormState.scholarship,
-          city: firstFormState.city,
+          location: firstFormState.location,
           area: firstFormState.area,
           benefits: firstFormState.benefits,
-          steps: fourthFormState!.steps);
+          steps: fourthFormState!.steps,
+          company: authState.user?.name ?? '');
 
       String? id = await _vacancyService.publishVacancy(vacancy);
 
@@ -148,8 +154,7 @@ class _PublishVacancyMultiFormPageState
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              Navigator.pop(
-                  context); // fecha a tela atual e retorna à tela anterior
+              Navigator.pop(context);
             },
           ),
         ],

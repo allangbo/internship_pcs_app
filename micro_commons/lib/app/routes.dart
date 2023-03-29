@@ -3,6 +3,7 @@ class Routes {
   static const String login = '/login';
   static const String loginErrorPage = '/login_error_page';
   static const String publishVacancy = '/publish_vacancy';
+  static const String vacancyDetailsPage = '/vacancy_details_page';
   static const String publishVacancySuccessPage =
       '/publish_vacancy_success_page';
   static const String publishVacancyErrorPage = '/publish_vacancy_error_page';
