@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_app_list_vacancies/app/services/apply_vacancy.service.dart';
 import 'package:micro_app_list_vacancies/app/services/vacancy_details.service.dart';
 import 'package:micro_commons/app/components/custom_form_button.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
@@ -16,10 +17,64 @@ class VacancyDetailsPage extends StatefulWidget {
 
 class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
   bool _isLoading = true;
+  bool _isLoadingApply = false;
   InternshipVacancy? _vacancy;
   final _vacancyDetailService = VacancyDetailService();
+  final _applyVacancyService = ApplyVacancyService();
 
-  void _getVacancies() async {
+  Future<void> _showApplyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Aplicar para a vaga'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Tem certeza de que deseja aplicar para esta vaga?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Sim'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _applyToVacancy();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _applyToVacancy() async {
+    final navigator = Navigator.of(context);
+    setState(() {
+      _isLoadingApply = true;
+    });
+
+    final applicationId = _vacancy?.id != null
+        ? await _applyVacancyService.applyToVacancy(
+            vacancyId: _vacancy?.id ?? '')
+        : null;
+
+    if (applicationId != null) {
+      navigator.pushReplacementNamed(Routes.applyVacancySuccessPage);
+    } else {
+      navigator.pushReplacementNamed(Routes.applyVacancyErrorPage);
+    }
+  }
+
+  void _getVacancy() async {
     final vacancy =
         await _vacancyDetailService.getPositionById(widget.vacancyId);
 
@@ -37,7 +92,7 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _getVacancies();
+    _getVacancy();
   }
 
   @override
@@ -134,19 +189,21 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
             ),
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CustomFormButton(
-                label: 'Aplicar Agora',
-                onPressed: () {},
-                isLoading: false,
-              ),
-            ],
-          ),
-        ),
+        bottomNavigationBar: !_isLoading
+            ? Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CustomFormButton(
+                      label: 'Aplicar Agora',
+                      onPressed: _showApplyDialog,
+                      isLoading: _isLoadingApply,
+                    ),
+                  ],
+                ),
+              )
+            : null,
       ),
     );
   }

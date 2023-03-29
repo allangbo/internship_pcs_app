@@ -4,6 +4,9 @@ class Routes {
   static const String loginErrorPage = '/login_error_page';
   static const String publishVacancy = '/publish_vacancy';
   static const String vacancyDetailsPage = '/vacancy_details_page';
+  static const String vacancyDetailsErrorPage = '/vacancy_details_error_page';
+  static const String applyVacancySuccessPage = '/apply_vacancy_success_page';
+  static const String applyVacancyErrorPage = '/apply_vacancy_error_page';
   static const String publishVacancySuccessPage =
       '/publish_vacancy_success_page';
   static const String publishVacancyErrorPage = '/publish_vacancy_error_page';
