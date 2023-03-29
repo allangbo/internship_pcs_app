@@ -27,10 +27,10 @@ class VacancyService {
     final result = await _client.mutate(options);
 
     if (result.hasException) {
-      _logger.e('PublishCurriculum exception: ${result.exception}');
+      _logger.e('PublishVacancy exception: ${result.exception}');
       return null;
     }
 
-    return result.data?['createCurriculum']['id'];
+    return result.data?['createPosition']['id'];
   }
 }

@@ -33,6 +33,7 @@ class VacancyItem extends StatelessWidget {
   final String imageUrl;
   final double salary;
   final String location;
+  final VoidCallback? onAction;
 
   const VacancyItem({
     Key? key,
@@ -42,69 +43,73 @@ class VacancyItem extends StatelessWidget {
     required this.imageUrl,
     required this.salary,
     required this.location,
+    this.onAction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-        color: VacancyItemStyle.whiteColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: VacancyItemStyle.boxShadow,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            margin: const EdgeInsets.only(right: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              image: const DecorationImage(
-                image: AssetImage(
-                    'packages/micro_app_list_vacancies/lib/assets/images/logo_nubank.png'),
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onAction,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: VacancyItemStyle.whiteColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: VacancyItemStyle.boxShadow,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              margin: const EdgeInsets.only(right: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: const DecorationImage(
+                  image: AssetImage(
+                      'packages/micro_app_list_vacancies/lib/assets/images/logo_nubank.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  name,
-                  style: VacancyItemStyle.titleStyle,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  company,
-                  style: VacancyItemStyle.subtitleStyle,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'R\$ ${salary.toStringAsFixed(2)}/mês',
-                      style: VacancyItemStyle.subtitleStyle.copyWith(
-                        fontWeight: FontWeight.w500,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Text(
+                    name,
+                    style: VacancyItemStyle.titleStyle,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    company,
+                    style: VacancyItemStyle.subtitleStyle,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'R\$ ${salary.toStringAsFixed(2)}/mês',
+                        style: VacancyItemStyle.subtitleStyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    Text(
-                      location,
-                      style: VacancyItemStyle.subtitleStyle,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Divider(height: 1, thickness: 1, color: Colors.grey[300]),
-              ],
+                      Text(
+                        location,
+                        style: VacancyItemStyle.subtitleStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Divider(height: 1, thickness: 1, color: Colors.grey[300]),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

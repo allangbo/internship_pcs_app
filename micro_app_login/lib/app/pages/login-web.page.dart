@@ -21,8 +21,11 @@ class _LoginWebPageState extends State<LoginWebPage> {
   final _logger = Logger();
   UserRole _selectedRole = UserRole.STUDENT;
   final _loginService = LoginService();
+  final _formKey = GlobalKey<FormState>();
 
   Future<void> _handleSignIn(BuildContext context) async {
+    _formKey.currentState!.save();
+
     setState(() {
       _isLoading = true;
     });
@@ -74,24 +77,27 @@ class _LoginWebPageState extends State<LoginWebPage> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30.0),
-            Container(
-              width: 327,
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                    color: CustomDropdownFormFieldStyles.borderColor),
-              ),
-              child: CustomDropdownFormField(
-                items: UserRole.values.map((e) => e.name).toList(),
-                itemCaptions: UserRole.values.map((e) => e.caption).toList(),
-                label: '',
-                onSaved: (value) {
-                  _selectedRole = UserRole.values.firstWhere(
-                      (e) => e.name == value,
-                      orElse: () => UserRole.STUDENT);
-                },
-                value: _selectedRole.name,
+            Form(
+              key: _formKey,
+              child: Container(
+                width: 327,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: CustomDropdownFormFieldStyles.borderColor),
+                ),
+                child: CustomDropdownFormField(
+                  items: UserRole.values.map((e) => e.name).toList(),
+                  itemCaptions: UserRole.values.map((e) => e.caption).toList(),
+                  label: '',
+                  onSaved: (value) {
+                    _selectedRole = UserRole.values.firstWhere(
+                        (e) => e.name == value,
+                        orElse: () => UserRole.STUDENT);
+                  },
+                  value: _selectedRole.name,
+                ),
               ),
             ),
             const SizedBox(height: 30.0),
