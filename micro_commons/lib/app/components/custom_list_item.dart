@@ -79,7 +79,7 @@ class _CustomListItemState extends State<CustomListItem> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    widget.item.text2,
+                    widget.item.text1,
                     style: CustomListItemStyle.subtitleStyle,
                   ),
                   const SizedBox(height: 8),
@@ -87,13 +87,13 @@ class _CustomListItemState extends State<CustomListItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.item.text3 ?? '',
+                        widget.item.text2,
                         style: CustomListItemStyle.subtitleStyle.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        widget.item.text4 ?? '',
+                        widget.item.text3 ?? '',
                         style: CustomListItemStyle.subtitleStyle,
                       ),
                     ],

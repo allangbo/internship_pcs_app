@@ -27,6 +27,10 @@ class CurriculaService {
     final result = await _client.mutate(options);
 
     if (result.hasException) {
+      if (result.exception?.graphqlErrors[0].message ==
+          "Curriculum already exists.") {
+        return '-1';
+      }
       _logger.e('PublishCurriculum exception: ${result.exception}');
       return null;
     }

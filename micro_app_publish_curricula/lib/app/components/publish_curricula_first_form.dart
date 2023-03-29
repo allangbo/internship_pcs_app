@@ -149,7 +149,7 @@ class PublishCurriculaFirstFormState extends State<PublishCurriculaFirstForm> {
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextFormField(
-                    label: 'Ano de Graduação',
+                    label: 'Data Prevista de Graduação',
                     validator: Validatorless.required(requiredMessage),
                     onSaved: (value) {
                       graduationYear = DateFormat('dd/MM/yyyy').parse(value!);

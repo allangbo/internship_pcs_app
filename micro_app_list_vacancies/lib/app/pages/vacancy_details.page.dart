@@ -156,16 +156,18 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
                                 const Text('Bolsa'),
                                 const SizedBox(height: 4),
                                 Text(_vacancy?.scholarship != null
-                                    ? 'R\$ ${_vacancy?.scholarship?.toStringAsFixed(2)}/mês'
+                                    //? 'R\$ ${_vacancy?.scholarship?.toStringAsFixed(2)}/mês'
+                                    ? 'R\$2000,00'
                                     : ''),
                               ],
                             ),
                             const SizedBox(width: 32),
                             Column(
-                              children: [
-                                const Text('Localização'),
-                                const SizedBox(height: 4),
-                                Text(_vacancy?.location ?? 'Location'),
+                              children: const [
+                                Text('Localização'),
+                                SizedBox(height: 4),
+                                //Text(_vacancy?.location ?? 'Location'),
+                                Text('São Paulo'),
                               ],
                             ),
                           ],
@@ -181,16 +183,17 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
                 Tab(text: 'Requisitos'),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(_vacancy?.description ?? 'Description'),
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                        'Nubank é uma empresa startup brasileira pioneira no segmento de serviços financeiros, atuando como operadora de cartões de crédito e fintech com operações no Brasil, sediada em São Paulo e fundada em 6 de maio de 2013'),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(_vacancy?.requirements ?? 'Requirements'),
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('- Cursando Engenharia de Computação'),
                   ),
                 ],
               ),
