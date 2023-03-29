@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     backgroundImage: AssetImage(
-                      'lib/assets/images/profile_pic.png',
+                      'packages/micro_commons/lib/assets/images/default_image.png',
                     ),
                     radius: 25,
                   ),
@@ -68,10 +68,7 @@ class HomePage extends StatelessWidget {
                 style: CustomTextStyle.servicesTitleStyle,
               ),
               const SizedBox(height: 20),
-              //_getMenuButtons(context, authState)
-              _getCompanyMenuButtons(context),
-              _getStudentMenuButtons(context),
-              _getTeacherMenuButtons(context)
+              _getMenuButtons(context, authState)
             ],
           ),
         ),

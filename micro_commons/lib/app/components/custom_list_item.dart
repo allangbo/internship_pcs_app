@@ -62,7 +62,7 @@ class _CustomListItemState extends State<CustomListItem> {
                     widget.item.imageUrl != null &&
                             widget.item.imageUrl!.isNotEmpty
                         ? widget.item.imageUrl!
-                        : 'packages/micro_commons/lib/assets/images/logo_nubank.png',
+                        : 'packages/micro_commons/lib/assets/images/default_image.png',
                   ),
                   fit: BoxFit.cover,
                 ),

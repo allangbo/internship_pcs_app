@@ -124,8 +124,16 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(_vacancy?.imageUrl ?? ''),
+                          backgroundImage: (_vacancy?.imageUrl != null &&
+                                  _vacancy!.imageUrl!.isNotEmpty)
+                              ? FadeInImage.assetNetwork(
+                                  placeholder:
+                                      'packages/micro_commons/lib/assets/images/default_image.png',
+                                  image: _vacancy?.imageUrl ?? '',
+                                  fit: BoxFit.cover,
+                                ).image
+                              : const AssetImage(
+                                  'packages/micro_commons/lib/assets/images/default_image.png'),
                           radius: 40,
                         ),
                         const SizedBox(height: 8),
