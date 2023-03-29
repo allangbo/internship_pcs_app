@@ -39,7 +39,7 @@ class ListCurriculaService {
         await _client.query(QueryOptions(document: gql(listCurriculaQuery)));
 
     if (result.hasException) {
-      _logger.e('Login exception: ${result.exception}');
+      _logger.e('GetAllCurricula exception: ${result.exception}');
       return null;
     }
 

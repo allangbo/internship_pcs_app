@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_list_curricula/app/components/curricula_item.dart';
+import 'package:intl/intl.dart';
 import 'package:micro_app_list_curricula/app/services/list_curricula_service.dart';
+import 'package:micro_commons/app/components/custom_list.dart';
 import 'package:micro_commons/app/entities/curriculum.dart';
 
 class ListCurriculaPage extends StatefulWidget {
@@ -13,101 +14,13 @@ class ListCurriculaPage extends StatefulWidget {
 class _ListCurriculaPageState extends State<ListCurriculaPage> {
   final _listCurriculasService = ListCurriculaService();
   List<Curriculum> _curriculas = [];
-  List<Curriculum> _filteredCurriculas = [];
-  List<Curriculum> _originalCurriculas = [];
   bool _isLoading = true;
-  String _searchQuery = '';
-
-  Widget _buildCurriculaItem(Curriculum curricula) {
-    return CurriculaItem(
-      curricula: curricula,
-    );
-  }
-
-  void _searchCurriculas(String query) {
-    setState(() {
-      _searchQuery = query;
-    });
-    if (query.isEmpty) {
-      setState(() {
-        _filteredCurriculas = [];
-        _curriculas = _originalCurriculas;
-      });
-    } else {
-      final filteredCurriculas = _originalCurriculas.where((curricula) {
-        final name = curricula.name.toLowerCase();
-        return name.contains(query.toLowerCase());
-      }).toList();
-      setState(() {
-        _filteredCurriculas = filteredCurriculas;
-        _curriculas = filteredCurriculas;
-      });
-    }
-  }
-
-  Widget _buildSearchField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Buscar currículos...',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: const BorderSide(color: Colors.transparent),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: const BorderSide(color: Colors.transparent),
-              ),
-              filled: true,
-              fillColor: ListCurriculasStyle.searchFieldColor,
-            ),
-            onChanged: (query) {
-              setState(() {
-                _searchQuery = query;
-              });
-              _searchCurriculas(query);
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 27, bottom: 10),
-          child: Text(
-            '${_curriculas.length} currículos encontrados',
-            style: const TextStyle(
-              fontSize: 16,
-              fontFamily: 'Poppins',
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildListViewCurriculas() {
-    final vacanciesToDisplay =
-        _filteredCurriculas.isNotEmpty ? _filteredCurriculas : _curriculas;
-    return ListView.builder(
-      padding: ListCurriculasStyle.listViewPadding,
-      itemCount: vacanciesToDisplay.length,
-      itemBuilder: (BuildContext context, int index) {
-        final curriculum = vacanciesToDisplay[index];
-        return _buildCurriculaItem(curriculum);
-      },
-    );
-  }
 
   void _getCurriculas() async {
     final curriculas = await _listCurriculasService.getCurriculas();
 
     if (curriculas != null) {
       setState(() {
-        _originalCurriculas = curriculas;
         _curriculas = curriculas;
       });
     }
@@ -147,18 +60,21 @@ class _ListCurriculaPageState extends State<ListCurriculaPage> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildSearchField(),
-            const SizedBox(height: 20),
+          children: [
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : _curriculas.isEmpty
-                      ? const Center(child: Text('Nenhum currículo encontrado'))
-                      : _filteredCurriculas.isEmpty && _searchQuery.isNotEmpty
-                          ? const Center(
-                              child: Text('Nenhum currículo encontrado'))
-                          : _buildListViewCurriculas(),
+                  : CustomList(
+                      items: _curriculas
+                          .map((e) => Item(
+                              title: '${e.name} ${e.lastName}',
+                              text1: e.degreeCourse,
+                              text2:
+                                  DateFormat('yyyy').format(e.graduationYear),
+                              imageUrl: '',
+                              onAction: () => {}))
+                          .toList(),
+                    ),
             ),
           ],
         ),
