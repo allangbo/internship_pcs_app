@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:micro_app_list_applications/app/services/list_applications.service.dart';
 import 'package:micro_commons/app/components/custom_list.dart';
 import 'package:micro_commons/app/entities/application.dart';
+import 'package:micro_commons/app/entities/internship_vacancy.dart';
 
 class ListApplicationsPage extends StatefulWidget {
   const ListApplicationsPage({Key? key}) : super(key: key);
@@ -13,9 +14,12 @@ class ListApplicationsPage extends StatefulWidget {
 class _ListApplicationsPageState extends State<ListApplicationsPage> {
   final _listApplicationsService = ListApplicationsService();
   List<Application> _applications = [];
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   void _getApplications() async {
+    setState(() {
+      _isLoading = true;
+    });
     final applications = await _listApplicationsService.getApplications();
 
     if (applications != null) {
@@ -32,7 +36,18 @@ class _ListApplicationsPageState extends State<ListApplicationsPage> {
   @override
   void initState() {
     super.initState();
-    _getApplications();
+    final vacancy = InternshipVacancy(
+        id: '',
+        name: 'Estagiário Tecnologia',
+        openingDate: DateTime.now(),
+        closingDate: DateTime.now(),
+        description: '',
+        requirements: '',
+        modality: '',
+        company: 'Nubank',
+        userId: '');
+    _applications = [Application(id: '', vacancy: vacancy, userId: '')];
+    //_getApplications();
   }
 
   @override
@@ -66,7 +81,7 @@ class _ListApplicationsPageState extends State<ListApplicationsPage> {
                   : CustomList(
                       items: _applications
                           .map((e) => Item(
-                              title: 'Nome do usuário',
+                              title: 'Allan Oliveira',
                               text1: e.vacancy.name,
                               text2: e.vacancy.company,
                               imageUrl: '',
