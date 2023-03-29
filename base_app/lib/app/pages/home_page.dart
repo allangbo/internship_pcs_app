@@ -162,7 +162,9 @@ class HomePage extends StatelessWidget {
       child: CustomButton(
         imageUrl: 'lib/assets/images/list_application.png',
         label: 'Candidaturas',
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.listApplications);
+        },
       ),
     );
   }

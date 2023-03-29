@@ -19,4 +19,7 @@ class Routes {
   static const String listVacanciesErrorPage = '/list_vacancies_error_page';
   static const String listCurricula = '/list_curricula';
   static const String listCurriculaErrorPage = '/list_curricula_error_page';
+  static const String listApplications = '/list_applications';
+  static const String listApplicationsErrorPage =
+      '/list_applications_error_page';
 }
