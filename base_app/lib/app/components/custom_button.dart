@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: 130,
       height: 120,
       child: ElevatedButton(
         onPressed: onPressed,
@@ -40,16 +40,19 @@ class CustomButton extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              label,
+            RichText(
+              textWidthBasis: TextWidthBasis.longestLine,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: CustomButtonStyle.fontFamily,
-                fontSize: CustomButtonStyle.fontSize,
-                fontWeight: CustomButtonStyle.fontWeight,
-                height: CustomButtonStyle.fontHeight,
-                letterSpacing: CustomButtonStyle.letterSpacing,
-                color: CustomButtonStyle.fontColor,
+              text: TextSpan(
+                text: label,
+                style: const TextStyle(
+                  fontFamily: CustomButtonStyle.fontFamily,
+                  fontSize: CustomButtonStyle.fontSize,
+                  fontWeight: CustomButtonStyle.fontWeight,
+                  height: CustomButtonStyle.fontHeight,
+                  letterSpacing: CustomButtonStyle.letterSpacing,
+                  color: CustomButtonStyle.fontColor,
+                ),
               ),
             ),
           ],

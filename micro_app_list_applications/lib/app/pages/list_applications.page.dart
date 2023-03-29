@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:micro_app_list_curricula/app/services/list_curricula_service.dart';
+import 'package:micro_app_list_applications/app/services/list_applications.service.dart';
 import 'package:micro_commons/app/components/custom_list.dart';
-import 'package:micro_commons/app/entities/curriculum.dart';
+import 'package:micro_commons/app/entities/application.dart';
 
-class ListCurriculaPage extends StatefulWidget {
-  const ListCurriculaPage({Key? key}) : super(key: key);
+class ListApplicationsPage extends StatefulWidget {
+  const ListApplicationsPage({Key? key}) : super(key: key);
 
   @override
-  State<ListCurriculaPage> createState() => _ListCurriculaPageState();
+  State<ListApplicationsPage> createState() => _ListApplicationsPageState();
 }
 
-class _ListCurriculaPageState extends State<ListCurriculaPage> {
-  final _listCurriculasService = ListCurriculaService();
-  List<Curriculum> _curriculas = [];
+class _ListApplicationsPageState extends State<ListApplicationsPage> {
+  final _listApplicationsService = ListApplicationsService();
+  List<Application> _applications = [];
   bool _isLoading = true;
 
-  void _getCurriculas() async {
-    final curriculas = await _listCurriculasService.getCurriculas();
+  void _getApplications() async {
+    final applications = await _listApplicationsService.getApplications();
 
-    if (curriculas != null) {
+    if (applications != null) {
       setState(() {
-        _curriculas = curriculas;
+        _applications = applications;
       });
     }
 
@@ -33,7 +32,7 @@ class _ListCurriculaPageState extends State<ListCurriculaPage> {
   @override
   void initState() {
     super.initState();
-    _getCurriculas();
+    _getApplications();
   }
 
   @override
@@ -50,13 +49,13 @@ class _ListCurriculaPageState extends State<ListCurriculaPage> {
           ),
         ],
         title: const Text(
-          "Currículos",
+          "Candidaturas",
         ),
         centerTitle: true,
       ),
       body: Container(
         decoration: const BoxDecoration(
-          color: ListCurriculasStyle.containerColor,
+          color: ListApplicationsStyle.containerColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,12 +64,11 @@ class _ListCurriculaPageState extends State<ListCurriculaPage> {
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : CustomList(
-                      items: _curriculas
+                      items: _applications
                           .map((e) => Item(
-                              title: '${e.name} ${e.lastName}',
-                              text1: e.degreeCourse,
-                              text2:
-                                  DateFormat('yyyy').format(e.graduationYear),
+                              title: 'Nome do usuário',
+                              text1: e.vacancy.name,
+                              text2: e.vacancy.company,
                               imageUrl: '',
                               onAction: () => {}))
                           .toList(),
@@ -83,7 +81,7 @@ class _ListCurriculaPageState extends State<ListCurriculaPage> {
   }
 }
 
-class ListCurriculasStyle {
+class ListApplicationsStyle {
   static const Color whiteColor = Colors.white;
   static const Color containerColor = Color.fromRGBO(250, 250, 253, 1);
   static const Color primaryColor = Color.fromRGBO(53, 104, 153, 1);

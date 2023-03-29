@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_list_vacancies/app/components/vacancy_item.dart';
 import 'package:micro_app_list_vacancies/app/services/list_vacancies.service.dart';
+import 'package:micro_commons/app/components/custom_list.dart';
 import 'package:micro_commons/app/entities/internship_vacancy.dart';
 import 'package:micro_commons/app/routes.dart';
 
@@ -14,114 +14,13 @@ class ListVacanciesPage extends StatefulWidget {
 class _ListVacanciesPageState extends State<ListVacanciesPage> {
   final _listVacanciesService = ListVacanciesService();
   List<InternshipVacancy> _vacancies = [];
-  List<InternshipVacancy> _filteredVacancies = [];
-  List<InternshipVacancy> _originalVacancies = [];
   bool _isLoading = true;
-  String _searchQuery = '';
-
-  Widget _buildVacancyItem(InternshipVacancy vacancy) {
-    return VacancyItem(
-      name: vacancy.name,
-      company: 'Nubank',
-      area: vacancy.area ?? '',
-      imageUrl: '',
-      salary: 2000,
-      location: vacancy.location ?? '',
-      onAction: () => {
-        Navigator.of(context)
-            .pushNamed(Routes.vacancyDetailsPage, arguments: {'id': vacancy.id})
-      },
-    );
-  }
-
-  void _searchVacancies(String query) {
-    setState(() {
-      _searchQuery = query;
-    });
-    if (query.isEmpty) {
-      setState(() {
-        _filteredVacancies = [];
-        _vacancies = _originalVacancies;
-      });
-    } else {
-      final filteredVacancies = _originalVacancies.where((vacancy) {
-        final name = vacancy.name.toLowerCase();
-        const company = '';
-        final area = vacancy.area?.toLowerCase() ?? '';
-        return name.contains(query.toLowerCase()) ||
-            company.contains(query.toLowerCase()) ||
-            area.contains(query.toLowerCase());
-      }).toList();
-      setState(() {
-        _filteredVacancies = filteredVacancies;
-        _vacancies = filteredVacancies;
-      });
-    }
-  }
-
-  Widget _buildSearchField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Buscar vagas...',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: const BorderSide(color: Colors.transparent),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: const BorderSide(color: Colors.transparent),
-              ),
-              filled: true,
-              fillColor: ListVacanciesStyle.searchFieldColor,
-            ),
-            onChanged: (query) {
-              setState(() {
-                _searchQuery = query;
-              });
-              _searchVacancies(query);
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 27, bottom: 10),
-          child: Text(
-            '${_vacancies.length} vagas encontradas',
-            style: const TextStyle(
-              fontSize: 16,
-              fontFamily: 'Poppins',
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildListViewVacancies() {
-    final vacanciesToDisplay =
-        _filteredVacancies.isNotEmpty ? _filteredVacancies : _vacancies;
-    return ListView.builder(
-      padding: ListVacanciesStyle.listViewPadding,
-      itemCount: vacanciesToDisplay.length,
-      itemBuilder: (BuildContext context, int index) {
-        final vacancy = vacanciesToDisplay[index];
-        return _buildVacancyItem(vacancy);
-      },
-    );
-  }
 
   void _getVacancies() async {
     final vacancies = await _listVacanciesService.getVacancies();
 
     if (vacancies != null) {
       setState(() {
-        _originalVacancies = vacancies;
         _vacancies = vacancies;
       });
     }
@@ -161,17 +60,26 @@ class _ListVacanciesPageState extends State<ListVacanciesPage> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildSearchField(),
-            const SizedBox(height: 20),
+          children: [
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : _vacancies.isEmpty
-                      ? const Center(child: Text('Nenhuma vaga encontrada'))
-                      : _filteredVacancies.isEmpty && _searchQuery.isNotEmpty
-                          ? const Center(child: Text('Nenhuma vaga encontrada'))
-                          : _buildListViewVacancies(),
+                  : CustomList(
+                      items: _vacancies
+                          .map((e) => Item(
+                              title: e.name,
+                              text1: e.company,
+                              text2: e.scholarship != null
+                                  ? 'R\$ ${e.scholarship?.toStringAsFixed(2)}/mês'
+                                  : '',
+                              imageUrl: e.imageUrl,
+                              onAction: () => {
+                                    Navigator.of(context).pushNamed(
+                                        Routes.vacancyDetailsPage,
+                                        arguments: {'id': e.id})
+                                  }))
+                          .toList(),
+                    ),
             ),
           ],
         ),
