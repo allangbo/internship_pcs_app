@@ -49,9 +49,12 @@ class _LoginWebPageState extends State<LoginWebPage> {
       final user = authState.user;
       if (user != null) {
         navigator.pushReplacementNamed(Routes.home);
+      } else {
+        navigator.pushNamed(Routes.loginErrorPage);
       }
     } catch (error) {
       _logger.e(error);
+      navigator.pushNamed(Routes.loginErrorPage);
     } finally {
       setState(() {
         _isLoading = false;

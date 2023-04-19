@@ -13,11 +13,18 @@ class VacancyDetailService {
                     query GetPosition(\$input: GetPositionByIdInput!){
                       getPositionById(input: \$input) {
                         id
+                        userId
                         positionName
                         company
                         role
+                        description
                         startsAt
                         endsAt
+                        steps
+                        benefits
+                        area
+                        location
+                        scholarship                    
                       }
                     }
                     ''';

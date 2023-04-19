@@ -22,4 +22,7 @@ class Routes {
   static const String listApplications = '/list_applications';
   static const String listApplicationsErrorPage =
       '/list_applications_error_page';
+  static const String curriculaDetailsPage = '/curricula_details_page';
+  static const String curriculaDetailsErrorPage =
+      '/curricula_details_error_page';
 }

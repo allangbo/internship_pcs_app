@@ -40,7 +40,7 @@ class ListVacanciesResolver implements MicroApp {
               labelActionButton: 'Visualizar Vagas',
             ),
         Routes.applyVacancyErrorPage: (context, args) => const ErrorPage(
-              returnRoute: Routes.vacancyDetailsPage,
+              returnRoute: Routes.listVacancies,
               title: 'Candidatura',
               message: 'Não foi possível aplicar para a vaga.',
             )

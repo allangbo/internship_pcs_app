@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:micro_app_list_applications/app/services/list_applications.service.dart';
 import 'package:micro_commons/app/components/custom_list.dart';
 import 'package:micro_commons/app/entities/application.dart';
-import 'package:micro_commons/app/entities/internship_vacancy.dart';
+import 'package:micro_commons/app/routes.dart';
+import 'package:micro_commons/app/userRole.enum.dart';
 
 class ListApplicationsPage extends StatefulWidget {
-  const ListApplicationsPage({Key? key}) : super(key: key);
+  final UserRole userType;
+  const ListApplicationsPage({Key? key, required this.userType})
+      : super(key: key);
 
   @override
   State<ListApplicationsPage> createState() => _ListApplicationsPageState();
@@ -13,42 +16,36 @@ class ListApplicationsPage extends StatefulWidget {
 
 class _ListApplicationsPageState extends State<ListApplicationsPage> {
   final _listApplicationsService = ListApplicationsService();
-  List<Application> _applications = [];
-  bool _isLoading = false;
+  Future<List<Application>>? _futureData;
 
-  void _getApplications() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final applications = await _listApplicationsService.getApplications();
+  Future<List<Application>> _getApplicationsByCompany() async {
+    final applications =
+        await _listApplicationsService.getApplicationsByCompany();
 
-    if (applications != null) {
-      setState(() {
-        _applications = applications;
-      });
-    }
+    return applications;
+  }
 
-    setState(() {
-      _isLoading = false;
-    });
+  Future<List<Application>> _getApplicationsByStudent() async {
+    final applications =
+        await _listApplicationsService.getApplicationsByStudent();
+
+    return applications;
   }
 
   @override
   void initState() {
     super.initState();
-    final vacancy = InternshipVacancy(
-        id: '',
-        name: 'Estagiário Tecnologia',
-        openingDate: DateTime.now(),
-        closingDate: DateTime.now(),
-        description: '',
-        requirements: '',
-        modality: '',
-        company: 'Nubank',
-        userId: '');
-    _applications = [Application(id: '', vacancy: vacancy, userId: '')];
-
-    //_getApplications();
+    setState(() {
+      switch (widget.userType) {
+        case UserRole.COMPANY:
+          _futureData = _getApplicationsByCompany();
+          break;
+        case UserRole.STUDENT:
+          _futureData = _getApplicationsByStudent();
+          break;
+        default:
+      }
+    });
   }
 
   @override
@@ -77,18 +74,39 @@ class _ListApplicationsPageState extends State<ListApplicationsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : CustomList(
-                      items: _applications
+              child: FutureBuilder<List<Application>>(
+                future: _futureData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.listApplicationsErrorPage);
+                    return Container();
+                  } else {
+                    final applications = snapshot.data ?? [];
+                    return CustomList(
+                      items: applications
                           .map((e) => Item(
-                              title: 'Allan Oliveira',
-                              text1: e.vacancy.name,
+                              title: e.vacancy.name,
+                              text1: 'Candidatura ${e.id}',
                               text2: e.vacancy.company,
                               imageUrl: '',
-                              onAction: () => {}))
+                              onAction: widget.userType == UserRole.COMPANY
+                                  ? () => {
+                                        Navigator.of(context).pushNamed(
+                                            Routes.curriculaDetailsPage,
+                                            arguments: {
+                                              'studentId': e.userId,
+                                              'userType': widget.userType
+                                            })
+                                      }
+                                  : () => {}))
                           .toList(),
-                    ),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
