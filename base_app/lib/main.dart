@@ -2,6 +2,7 @@ import 'package:base_app/app/colors/default_custom_color.dart';
 import 'package:base_app/app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:micro_app_curricula_details/app/curricula_details_resolver.dart';
 import 'package:micro_app_list_applications/app/list_applications_resolver.dart';
 import 'package:micro_app_list_vacancies/app/list_vacancies_resolver.dart';
 import 'package:micro_app_login/app/login_resolver.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget with BaseApp {
   Map<String, WidgetBuilderArgs> get baseRoutes => {
         Routes.home: (context, args) => AuthRoute(
               builder: (context, authState) => HomePage(
-                username: authState.user?.name ?? '',
+                user: authState.user,
               ),
             ),
       };
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget with BaseApp {
         LoginResolver(),
         PublishCurriculaResolver(),
         ListCurriculaResolver(),
-        ListApplicationsResolver()
+        ListApplicationsResolver(),
+        CurriculaDetailsResolver()
       ];
 }

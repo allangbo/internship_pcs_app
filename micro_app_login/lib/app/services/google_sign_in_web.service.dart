@@ -75,7 +75,7 @@ class GoogleSignInService {
           id: userData?['id'],
           name: userData?['name'],
           email: userData?['email'],
-          photoUrl: userData?['photoUrl'],
+          photoUrl: userData?['profilePictureUrl'],
         );
 
         authState.setUser(user);

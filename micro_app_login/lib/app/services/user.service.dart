@@ -13,6 +13,7 @@ class UserService {
         id
         name
         email
+        profilePictureUrl
       }
     }
   ''';

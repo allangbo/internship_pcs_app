@@ -123,17 +123,9 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundImage: (_vacancy?.imageUrl != null &&
-                                  _vacancy!.imageUrl!.isNotEmpty)
-                              ? FadeInImage.assetNetwork(
-                                  placeholder:
-                                      'packages/micro_commons/lib/assets/images/default_image.png',
-                                  image: _vacancy?.imageUrl ?? '',
-                                  fit: BoxFit.cover,
-                                ).image
-                              : const AssetImage(
-                                  'packages/micro_commons/lib/assets/images/default_image.png'),
+                        const CircleAvatar(
+                          backgroundImage: AssetImage(
+                              'packages/micro_commons/lib/assets/images/default_image.png'),
                           radius: 40,
                         ),
                         const SizedBox(height: 8),
@@ -156,18 +148,16 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
                                 const Text('Bolsa'),
                                 const SizedBox(height: 4),
                                 Text(_vacancy?.scholarship != null
-                                    //? 'R\$ ${_vacancy?.scholarship?.toStringAsFixed(2)}/mês'
-                                    ? 'R\$2000,00'
+                                    ? 'R\$ ${_vacancy?.scholarship?.toStringAsFixed(2)}/mês'
                                     : ''),
                               ],
                             ),
                             const SizedBox(width: 32),
                             Column(
-                              children: const [
-                                Text('Localização'),
-                                SizedBox(height: 4),
-                                //Text(_vacancy?.location ?? 'Location'),
-                                Text('São Paulo'),
+                              children: [
+                                const Text('Localização'),
+                                const SizedBox(height: 4),
+                                Text(_vacancy?.location ?? 'São Paulo'),
                               ],
                             ),
                           ],
@@ -180,21 +170,20 @@ class _VacancyDetailsPageState extends State<VacancyDetailsPage> {
               indicatorColor: Theme.of(context).primaryColor,
               tabs: const [
                 Tab(text: 'Descrição'),
-                Tab(text: 'Requisitos'),
+                Tab(text: 'Benefícios'),
               ],
             ),
-            const Expanded(
+            Expanded(
               child: TabBarView(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                        'Nubank é uma empresa startup brasileira pioneira no segmento de serviços financeiros, atuando como operadora de cartões de crédito e fintech com operações no Brasil, sediada em São Paulo e fundada em 6 de maio de 2013'),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(_vacancy?.description ?? ''),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text('- Cursando Engenharia de Computação'),
-                  ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(_vacancy?.benefits ?? ''),
+                  )
                 ],
               ),
             ),

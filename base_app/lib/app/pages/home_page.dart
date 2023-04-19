@@ -1,15 +1,16 @@
 import 'package:base_app/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:micro_commons/app/auth_state.dart';
+import 'package:micro_commons/app/entities/user.dart';
 import 'package:micro_commons/app/graphql_config.dart';
 import 'package:micro_commons/app/routes.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  final String username;
+  final User? user;
 
-  const HomePage({Key? key, required this.username}) : super(key: key);
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +50,25 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
-                    backgroundImage: AssetImage(
-                      'packages/micro_commons/lib/assets/images/default_image.png',
+                  ClipOval(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Image.network(
+                        user?.photoUrl ?? '',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'packages/micro_commons/lib/assets/images/default_image.png',
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
-                    radius: 25,
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    username,
+                    user?.name ?? '',
                     style: CustomTextStyle.usernameStyle,
                   ),
                 ],
@@ -140,14 +151,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _getListApplicationButton(BuildContext context) {
+  Widget _getListApplicationButton(BuildContext context, UserRole userType) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
       child: CustomButton(
         imageUrl: 'lib/assets/images/list_application.png',
         label: 'Candidaturas',
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.listApplications);
+          Navigator.of(context).pushNamed(Routes.listApplications,
+              arguments: {'userType': userType});
         },
       ),
     );
@@ -194,7 +206,7 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             _getProfileButton(context),
-            _getListApplicationButton(context),
+            _getListApplicationButton(context, UserRole.STUDENT),
             _getNotificationsButton(context),
           ],
         ),
@@ -218,7 +230,7 @@ class HomePage extends StatelessWidget {
           children: [
             _getProfileButton(context),
             _getPublishVacancyButton(context),
-            _getListApplicationButton(context)
+            _getListApplicationButton(context, UserRole.COMPANY)
           ],
         ),
         const SizedBox(width: 30),
@@ -240,7 +252,7 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             _getListStudentsButton(context),
-            _getListApplicationButton(context),
+            _getListApplicationButton(context, UserRole.PROFESSOR),
             _getListVacanciesButton(context),
           ],
         ),

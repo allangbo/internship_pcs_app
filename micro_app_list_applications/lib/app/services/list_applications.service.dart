@@ -9,33 +9,76 @@ class ListApplicationsService {
       GraphQLConfig(url: Uris.uriBase).getGraphQLClient();
   final Logger _logger = Logger();
 
-  String listApplicationsQuery = '''
-                    query GetAllApplicationsQuery {
-                      getAllApplications {
+  String listApplicationsByCompanyQuery = '''
+                    query getAllApplicationsByCompanyQuery {
+                      getAllApplicationsByCompany {
                         id
                         position {
                           id
+                          userId
                           positionName
                           company
+                          role
+                          startsAt
+                          endsAt
                         }
                         userId
                       }
                     }
                     ''';
 
-  Future<List<Application>?> getApplications() async {
-    final result =
-        await _client.query(QueryOptions(document: gql(listApplicationsQuery)));
+  String listApplicationsByStudentQuery = '''
+                    query getAllApplicationsByStudentQuery {
+                      getAllApplicationsByStudent {
+                        id
+                        position {
+                          id
+                          userId
+                          positionName
+                          company
+                          role
+                          startsAt
+                          endsAt
+                        }
+                        userId
+                      }
+                    }
+                    ''';
+
+  Future<List<Application>> getApplicationsByCompany() async {
+    final result = await _client
+        .query(QueryOptions(document: gql(listApplicationsByCompanyQuery)));
 
     if (result.hasException) {
-      _logger.e('Get all applications exception: ${result.exception}');
-      return null;
+      _logger
+          .e('Get all applications by company exception: ${result.exception}');
+      return [];
     }
 
-    final data = result.data?['getAllApplications'];
+    final data = result.data?['getAllApplicationsByCompany'];
 
-    final applications =
-        List.from(data).map((e) => Application.fromJson(e)).toList();
+    final applications = data != null
+        ? List.from(data).map((e) => Application.fromJson(e)).toList()
+        : <Application>[];
+
+    return applications;
+  }
+
+  Future<List<Application>> getApplicationsByStudent() async {
+    final result = await _client
+        .query(QueryOptions(document: gql(listApplicationsByStudentQuery)));
+
+    if (result.hasException) {
+      _logger
+          .e('Get all applications by student exception: ${result.exception}');
+      return [];
+    }
+
+    final data = result.data?['getAllApplicationsByStudent'];
+
+    final applications = data != null
+        ? List.from(data).map((e) => Application.fromJson(e)).toList()
+        : <Application>[];
 
     return applications;
   }
