@@ -24,7 +24,7 @@ class VacancyDetailService {
                         benefits
                         area
                         location
-                        scholarship                    
+                        scholarship                   
                       }
                     }
                     ''';
