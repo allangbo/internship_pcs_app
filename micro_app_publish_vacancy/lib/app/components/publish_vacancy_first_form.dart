@@ -145,8 +145,8 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
                   CustomTextFormField(
                     label: 'Bolsa Estágio',
                     onSaved: (value) {
-                      scholarship =
-                          value != null ? double.tryParse(value) : null;
+                      scholarship = UtilBrasilFields.converterMoedaParaDouble(
+                          value ?? '');
                     },
                     type: TextInputType.number,
                     inputFormatters: [

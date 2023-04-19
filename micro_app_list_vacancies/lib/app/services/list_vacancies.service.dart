@@ -17,8 +17,14 @@ class ListVacanciesService {
                         positionName
                         company
                         role
+                        description
                         startsAt
                         endsAt
+                        steps
+                        benefits
+                        area
+                        location
+                        scholarship
                       }
                     }
                     ''';
