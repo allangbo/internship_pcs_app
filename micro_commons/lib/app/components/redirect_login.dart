@@ -6,8 +6,9 @@ class RedirectToLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      navigator.pushNamedAndRemoveUntil(
         Routes.login,
         (Route<dynamic> route) => false,
       );

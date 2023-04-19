@@ -10,48 +10,46 @@ class InternshipVacancy {
   String modality;
   String company;
   String userId;
-  String? imageUrl;
   double? scholarship;
   String? location;
   String? area;
   String? benefits;
   List<String>? steps;
 
-  InternshipVacancy(
-      {required this.id,
-      required this.name,
-      required this.openingDate,
-      required this.closingDate,
-      required this.description,
-      required this.requirements,
-      required this.modality,
-      required this.company,
-      required this.userId,
-      this.scholarship,
-      this.location,
-      this.area,
-      this.benefits,
-      this.steps,
-      this.imageUrl});
+  InternshipVacancy({
+    required this.id,
+    required this.name,
+    required this.openingDate,
+    required this.closingDate,
+    required this.description,
+    required this.requirements,
+    required this.modality,
+    required this.company,
+    required this.userId,
+    this.scholarship,
+    this.location,
+    this.area,
+    this.benefits,
+    this.steps,
+  });
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['positionName'] = name;
     data['userId'] = userId;
     data['company'] = company;
-    data['role'] = area;
+    data['area'] = area;
     data['startsAt'] = DateFormat('yyyy-MM-dd').format(openingDate);
     data['endsAt'] = DateFormat('yyyy-MM-dd').format(closingDate);
+    data['description'] = description;
+    data['steps'] = steps;
+    data['benefits'] = benefits;
+    data['compensation'] = '0';
+    data['role'] = modality;
+    data['location'] = location;
+    data['scholarship'] = scholarship.toString();
 
-    //data['endsAt'] = closingDate.toIso8601String();
-    //data['description'] = description;
     //data['requirements'] = requirements;
-    //data['modality'] = modality;
-    //data['scholarship'] = scholarship;
-    //data['location'] = location;
-    //data['benefits'] = benefits;
-    //data['steps'] = steps;
-    //data['imageUrl'] = imageUrl
     return data;
   }
 
@@ -66,13 +64,12 @@ class InternshipVacancy {
           json['endsAt'] ?? DateFormat('yyyy-MM-dd').format(DateTime.now())),
       description: json['description'] ?? '',
       requirements: json['requirements'] ?? '',
-      modality: json['modality'] ?? '',
-      scholarship: json['scholarship'] ?? 0,
-      location: json['city'] ?? '',
-      area: json['role'] ?? '',
+      modality: json['role'] ?? '',
+      scholarship: double.tryParse(json['scholarship'] ?? '') ?? 0,
+      location: json['location'] ?? '',
+      area: json['area'] ?? '',
       benefits: json['benefits'] ?? '',
       company: json['company'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
       steps: List<String>.from(json['steps'] ?? []),
     );
   }
