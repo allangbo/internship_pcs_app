@@ -198,6 +198,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _getMyCurriculumButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+      child: CustomButton(
+        imageUrl: 'lib/assets/images/list_companies.png',
+        label: 'Meu Currículo',
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.curriculaDetailsPage,
+              arguments: {'userType': UserRole.STUDENT});
+        },
+      ),
+    );
+  }
+
   Widget _getStudentMenuButtons(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +228,8 @@ class HomePage extends StatelessWidget {
         Column(
           children: [
             _getListVacanciesButton(context),
-            _getPublishCurriculaButton(context)
+            _getPublishCurriculaButton(context),
+            _getMyCurriculumButton(context)
           ],
         ),
       ],

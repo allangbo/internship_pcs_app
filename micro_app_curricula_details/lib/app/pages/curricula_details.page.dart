@@ -4,6 +4,23 @@ import 'package:micro_commons/app/entities/curriculum.dart';
 import 'package:micro_commons/app/routes.dart';
 import 'package:micro_commons/app/userRole.enum.dart';
 
+class CurriculumDetailsPageStyle {
+  static const Color primaryColor = Color(0xFF4C8BF5);
+  static const Color secondaryColor = Color(0xFF687C9A);
+  static const TextStyle headerTextStyle =
+      TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: primaryColor);
+  static const TextStyle subHeaderTextStyle = TextStyle(
+      fontSize: 22, fontWeight: FontWeight.bold, color: secondaryColor);
+  static const TextStyle infoTextStyle =
+      TextStyle(fontSize: 18, color: secondaryColor);
+  static const TextStyle smallInfoTextStyle =
+      TextStyle(fontSize: 16, color: secondaryColor);
+  static const TextStyle smallTextStyle =
+      TextStyle(fontSize: 14, color: secondaryColor);
+  static const double verticalSpacing = 10.0;
+  static const double sectionSpacing = 20.0;
+}
+
 class CurriculumDetailsPage extends StatefulWidget {
   final UserRole userType;
   final String? studentId;
@@ -73,96 +90,115 @@ class _CurriculumDetailsPageState extends State<CurriculumDetailsPage> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<Curriculum?>(
-            future: _futureData,
-            builder: (context, snapshot) {
-              final curriculum = snapshot.data;
+        child: Center(
+          child: FutureBuilder<Curriculum?>(
+              future: _futureData,
+              builder: (context, snapshot) {
+                final curriculum = snapshot.data;
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError || curriculum == null) {
-                Navigator.of(context)
-                    .pushReplacementNamed(Routes.curriculaDetailsErrorPage);
-                return Container();
-              } else {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${curriculum.name} ${curriculum.lastName}',
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Curso: ${curriculum.degreeCourse}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Ano de formatura: ${curriculum.graduationYear.year}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Experiências passadas',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    for (Experience experience in curriculum.pastExperiences)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            experience.company,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${experience.role} (${experience.startedAt.year} - ${experience.endedAt.year})',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            experience.description,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError || curriculum == null) {
+                  Navigator.of(context)
+                      .pushReplacementNamed(Routes.curriculaDetailsErrorPage);
+                  return Container();
+                } else {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${curriculum.name} ${curriculum.lastName}',
+                        style: CurriculumDetailsPageStyle.headerTextStyle,
                       ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Certificados',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    for (Activity activity in curriculum.certificates)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            activity.name,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${activity.description} (${activity.completedAt.year})',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Validade: ${activity.expiresAt.year}',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.verticalSpacing),
+                      Text(
+                        'Curso: ${curriculum.degreeCourse}',
+                        style: CurriculumDetailsPageStyle.infoTextStyle,
                       ),
-                  ],
-                );
-              }
-            }),
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.verticalSpacing),
+                      Text(
+                        'Ano de formatura: ${curriculum.graduationYear.year}',
+                        style: CurriculumDetailsPageStyle.infoTextStyle,
+                      ),
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.sectionSpacing),
+                      const Text(
+                        'Experiências passadas',
+                        style: CurriculumDetailsPageStyle.subHeaderTextStyle,
+                      ),
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.verticalSpacing),
+                      for (Experience experience in curriculum.pastExperiences)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              experience.company,
+                              style: CurriculumDetailsPageStyle.infoTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                            Text(
+                              '${experience.role} (${experience.startedAt.year} - ${experience.endedAt.year})',
+                              style:
+                                  CurriculumDetailsPageStyle.smallInfoTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                            Text(
+                              experience.description,
+                              style: CurriculumDetailsPageStyle.smallTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                          ],
+                        ),
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.sectionSpacing),
+                      const Text(
+                        'Certificados',
+                        style: CurriculumDetailsPageStyle.subHeaderTextStyle,
+                      ),
+                      const SizedBox(
+                          height: CurriculumDetailsPageStyle.verticalSpacing),
+                      for (Activity activity in curriculum.certificates)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              activity.name,
+                              style: CurriculumDetailsPageStyle.infoTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                            Text(
+                              '${activity.description} (${activity.completedAt.year})',
+                              style:
+                                  CurriculumDetailsPageStyle.smallInfoTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                            Text(
+                              'Validade: ${activity.expiresAt.year}',
+                              style: CurriculumDetailsPageStyle.smallTextStyle,
+                            ),
+                            const SizedBox(
+                                height:
+                                    CurriculumDetailsPageStyle.verticalSpacing),
+                          ],
+                        ),
+                    ],
+                  );
+                }
+              }),
+        ),
       ),
     );
   }

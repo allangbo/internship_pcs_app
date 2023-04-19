@@ -124,7 +124,7 @@ class PublishVacancyFirstFormState extends State<PublishVacancyFirstForm> {
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextFormField(
-                    label: 'Cidade',
+                    label: 'Localização',
                     onSaved: (value) {
                       location = value!;
                     },
